@@ -87,7 +87,7 @@ declare function bibls:query-string() as xs:string? {
 if($bibls:subject != '') then bibls:subject()
 else if(request:get-parameter('bibl', '')) then bibls:bibl()
 else
- concat("collection('",$config:data-root,"/bibl/tei')//tei:body",
+ concat("collection('",$config:data-root,"/bibl/tei')//tei:TEI",
     data:keyword-search(),
     bibls:title(),
     bibls:author(),
