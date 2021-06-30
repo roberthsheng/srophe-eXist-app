@@ -1487,12 +1487,30 @@
             <xsl:apply-templates select="*[not(self::t:title)]" mode="full"/>
         </div>
     </xsl:template>
+    <xsl:template match="t:textLang" mode="full">
+        <p>
+            <span class="tei-label">Language: </span>
+            <span class="tei-{local-name(.)}">
+                <xsl:value-of select="@mainLang"/>
+            </span>
+        </p>
+    </xsl:template>
     <xsl:template match="t:series" mode="full">
         <h4>Series</h4>
         <div class="indent">
             <xsl:apply-templates select="t:title" mode="full"/>
             <xsl:apply-templates select="*[not(self::t:title)]" mode="full"/>
         </div>
+    </xsl:template>
+    <xsl:template match="t:author | t:editor | t:principal | t:person | t:persName | t:name" mode="full">
+        <p>
+            <span class="tei-label">
+                <xsl:value-of select="concat(upper-case(substring(name(.),1,1)),substring(name(.),2))"/>: </span>
+            <span class="tei-{local-name(.)}">
+                <xsl:sequence select="local:attributes(.)"/>
+                <xsl:apply-templates select="." mode="lastname-first"/>
+            </span>
+        </p>
     </xsl:template>
     <xsl:template match="*" mode="full">
         <p>
