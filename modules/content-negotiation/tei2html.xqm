@@ -156,6 +156,11 @@ declare function tei2html:summary-view($nodes as node()*, $lang as xs:string?, $
             {if($nodes/descendant::tei:entryFree) then 
                 concat(' (',replace(string($nodes/descendant::tei:entryFree/@type),'-',' '),')')
              else if(contains($id,'/bibl/')) then 
+                if($nodes/descendant::tei:bibl[@type="formatted"][@subtype="citation"]) then 
+                  <span class="results-list-desc desc" dir="ltr" lang="en">{
+                    tei2html:tei2html($nodes/descendant::tei:bibl[@type="formatted"][@subtype="citation"])
+                    }</span>  
+                else 
                 <span class="results-list-desc desc" dir="ltr" lang="en">{
                     bibl2html:citation($nodes/descendant::tei:biblStruct)
                 }</span>
