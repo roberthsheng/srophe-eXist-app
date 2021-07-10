@@ -298,6 +298,9 @@ pre {
 .tab-content {padding-top:.25em;}
 .text {margin:0}
 .title {border-bottom:1px solid grey}
+.title-journal:lang(zh-Hant), .title-monographic:lang(zh-Hant){font-style:normal;}
+.title-journal:lang(zh-Hant)::before, .title-monographic:lang(zh-Hant)::before{content:"《";}
+.title-journal:lang(zh-Hant)::after, .title-monographic:lang(zh-Hant)::after{content:"》";}
 .title-journal, .title-monographic{font-style:italic;}
 .tooltip {
       padding:.25em;
