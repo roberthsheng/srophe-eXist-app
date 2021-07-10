@@ -334,7 +334,7 @@
                         <xsl:apply-templates select="//t:note[@type='abstract']"/>
                     </div>
                 </xsl:if>
-                <h3>Full Citation Information</h3>
+                <h3>Additional Citation Information</h3>
                 <div class="section indent">
                     <xsl:apply-templates select="*[not(self::t:note[@type= ('tag','abstract')]) and not(self::t:citedRange)]" mode="full"/>
                 </div>

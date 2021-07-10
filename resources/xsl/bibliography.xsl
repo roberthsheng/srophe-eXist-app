@@ -220,7 +220,11 @@
                                 -->
                                 <xsl:if test="descendant::t:surname">
                                     <xsl:value-of select="upper-case(descendant::t:surname[1])"/> 
-                                    <xsl:text>, </xsl:text>
+                                    <xsl:text>. </xsl:text>
+                                </xsl:if>
+                                <xsl:if test="descendant::t:imprint/t:date">
+                                    <xsl:value-of select="upper-case(descendant::t:imprint/t:date[1])"/> 
+                                    <xsl:text>. </xsl:text>
                                 </xsl:if>
                                 <xsl:choose>
                                     <xsl:when test="descendant::t:title[@type='short']">
