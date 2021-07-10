@@ -1295,6 +1295,10 @@
                         </xsl:when>
                     </xsl:choose>
                 </xsl:attribute>
+                <!-- matches($s,'\p{IsBasicLatin}|\p{IsLatin-1Supplement}|\p{IsLatinExtended-A}|\p{IsLatinExtended-B}','i' -->
+                <xsl:if test="matches(., '[\p{IsCJKUnifiedIdeographs}\p{IsCJKUnifiedIdeographsExtensionA}\p{IsCJKUnifiedIdeographsExtensionB}\p{IsCJKCompatibilityIdeographs}\p{IsCJKCompatibilityIdeographsSupplement}]')">
+                    <xsl:attribute name="lang">zh-Hant</xsl:attribute>
+                </xsl:if>
                 <xsl:for-each select="./node()">
                     <xsl:apply-templates select="."/>
                 </xsl:for-each>
