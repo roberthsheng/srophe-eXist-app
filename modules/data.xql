@@ -9,8 +9,8 @@ xquery version "3.1";
  :)
  
 
-import module namespace config="http://syriaca.org/srophe/config" at "config.xqm";
-import module namespace cntneg="http://syriaca.org/srophe/cntneg" at "content-negotiation/content-negotiation.xqm";
+import module namespace config="http://srophe.org/srophe/config" at "config.xqm";
+import module namespace cntneg="http://srophe.org/srophe/cntneg" at "content-negotiation/content-negotiation.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
