@@ -33,6 +33,8 @@ import module namespace tei2rdf="http://srophe.org/srophe/tei2rdf" at "tei2rdf.x
 import module namespace tei2ttl="http://srophe.org/srophe/tei2ttl" at "tei2ttl.xqm";
 import module namespace tei2html="http://srophe.org/srophe/tei2html" at "tei2html.xqm";
 import module namespace tei2txt="http://srophe.org/srophe/tei2txt" at "tei2txt.xqm";
+import module namespace tei2tsv="http://srophe.org/srophe/tei2tsv" at "tei2tsv.xqm";
+
 
 (: These are needed for rending as HTML via existdb templating module, can be removed if not using 
 import module namespace config="http://syriaca.org/config" at "config.xqm";
@@ -102,6 +104,9 @@ declare function cntneg:content-negotiation($data as item()*, $content-type as x
             (response:set-header("Content-Type", "text/plain; charset=utf-8"),
              response:set-header("Access-Control-Allow-Origin", "text/plain; charset=utf-8"),
              tei2txt:tei2txt($data))
+        else if($flag = ('tsv','TSV')) then
+            (response:set-header("Content-Type", "text/tab-separated-values; charset=utf-8"),
+             tei2tsv:tei2tsv($data))
         else if($content-type = 'html-summary') then
             (response:set-header("Content-Type", "text/html; charset=utf-8"),
              tei2html:numbered-titles($data))             
@@ -210,6 +215,7 @@ declare function cntneg:determine-extension($header){
     else if (contains(string-join($header),"application/vnd.google-earth.kmz") or $header = 'kml') then "kml"
     else if (contains(string-join($header),"application/geo+json") or $header = 'geojson') then "geojson"
     else if (contains(string-join($header),"text/plain") or $header = 'txt') then "txt"
+    else if (contains(string-join($header),"text/tab-separated-values") or $header = 'tsv') then "tsv"
     else if (contains(string-join($header),"application/pdf") or $header = 'pdf') then "pdf"
     else if (contains(string-join($header),"application/epub+zip") or $header = 'epub') then "epub"
     else "html"
@@ -227,6 +233,7 @@ declare function cntneg:determine-media-type($extension){
     case "kml" return "application/vnd.google-earth.kmz"
     case "geojson" return "application/geo+json"
     case "txt" return "text/plain"
+    case "tsv" return "text/tab-separated-values"
     case "pdf" return "application/pdf"
     case "epub" return "application/epub+zip"
     default return "text/html"
