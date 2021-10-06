@@ -33,7 +33,7 @@ let $headers :=concat(string-join(
                 'site-name-Wade-Giles','site-name-other','site-name-other2','site-name-other3',
                 'site-name-other4','site-name-other5','site-name-other6','site-name-other7',
                 'site-name-other8','site-name-other9','site-name-other10',
-                'date','dynasty','site data',
+                'date','dynasty','site data','building data',
                 'site type','buildings in site'),"&#x9;"),'&#xa;')
 let $data :=                   
     string-join(
@@ -64,6 +64,7 @@ let $data :=
     let $date := concat($n/tei:state[@type="existence"][1]/@from,'/',$n/tei:state[@type="existence"][1]/@to)
     let $dynasty := tei2tsv:value($n/tei:state[@subtype="dynasty"]/tei:desc)
     let $site-data := tei2tsv:value($n/tei:desc[@type="site-data"])
+    let $building-data := tei2tsv:value($n/tei:desc[@type="building-data"])
     let $site-type := tei2tsv:value($n/tei:trait[@type="type"])
     let $buildings-in-site := string($record/descendant::tei:relation[@ana="site-type"]/@passive)
     return 
@@ -72,7 +73,7 @@ let $data :=
             $site-name-en, $site-name-zh-latn-pinyin, $site-name-zh-Hant, $site-name-zh-Hans, $site-name-Wade-Giles, 
             $site-name-other, $site-name-other2,$site-name-other3,$site-name-other4,$site-name-other5,$site-name-other6,
             $site-name-other7,$site-name-other8,$site-name-other9,$site-name-other10,
-            $date, $dynasty, $site-data, $site-type, $buildings-in-site),"&#x9;"),'&#xa;'))
+            $date, $dynasty, $site-data, $building-data, $site-type, $buildings-in-site),"&#x9;"),'&#xa;'))
 return concat($headers,($data))    
 };
 
@@ -114,7 +115,7 @@ let $data :=
     let $site-name-other10 := tei2tsv:value($n/tei:placeName[15])  
     let $date := concat($n/tei:state[@type="existence"][1]/@from,'/',$n/tei:state[@type="existence"][1]/@to)
     let $dynasty := tei2tsv:value($n/tei:state[@subtype="dynasty"]/tei:desc)
-    let $site-data := tei2tsv:value($n/tei:desc[@type="site-data"])
+    let $building-data := tei2tsv:value($n/tei:desc[@type="building-data"])
     let $site-type := tei2tsv:value($n/tei:trait[@type="type"])
     let $buildings-in-site := string($record/descendant::tei:relation[@ref="schema:containedInPlace"]/@passive)
     return 
@@ -123,7 +124,7 @@ let $data :=
             $site-name-en, $site-name-zh-latn-pinyin, $site-name-zh-Hant, $site-name-zh-Hans, $site-name-Wade-Giles, 
             $site-name-other, $site-name-other2, $site-name-other3, $site-name-other4, $site-name-other5, $site-name-other6,
             $site-name-other7, $site-name-other8, $site-name-other9, $site-name-other10, 
-            $date, $dynasty, $site-data, $site-type, $buildings-in-site),"&#x9;"),'&#xa;'))
+            $date, $dynasty, $building-data, $site-type, $buildings-in-site),"&#x9;"),'&#xa;'))
 return concat($headers,($data))    
 };
 
