@@ -125,9 +125,9 @@ declare function global:odd2text($element as xs:string?, $label as xs:string?) a
  : @param $titlestring 
  : @param $lang   
  :)
-declare function global:build-sort-string($titlestring as xs:string?, $lang as xs:string?) as xs:string* {
-    if($lang = 'ar') then global:ar-sort-string($titlestring)
-    else normalize-unicode(lower-case(replace(normalize-space($titlestring),'^\s+|^[‘|ʻ|ʿ|ʾ]|^[tT]he\s+|^[dD]e\s+|^[dD]e-|^[oO]n\s+[aA]\s+|^[oO]n\s+|^[aA]l-|^[aA]n\s|^[aA]\s+|^\d*\W|^[^\p{L}]','')),'NFKD')
+declare function global:build-sort-string($titlestring as xs:string*, $lang as xs:string*) as xs:string* {
+    if($lang[1] = 'ar') then global:ar-sort-string($titlestring[1])
+    else normalize-unicode(lower-case(replace(normalize-space($titlestring[1]),'^\s+|^[‘|ʻ|ʿ|ʾ]|^[tT]he\s+|^[dD]e\s+|^[dD]e-|^[oO]n\s+[aA]\s+|^[oO]n\s+|^[aA]l-|^[aA]n\s|^[aA]\s+|^\d*\W|^[^\p{L}]','')),'NFKD')
 };
 
 (:~
