@@ -23,79 +23,74 @@ declare variable $sf:sortFields := map { "fields": ("title", "author") };
  : Note: Investigate boost? 
 :)
 declare function sf:build-index(){
-<index xmlns="http://exist-db.org/collection-config/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#">
-    <lucene diacritics="no">
-        <module uri="http://srophe.org/srophe/facets" prefix="sf" at="xmldb:exist:///{$config:app-root}/modules/lib/facets.xql"/>
-        <text qname="tei:body">{
-        let $facets :=     
-            for $f in collection($config:app-root)//facet:facet-definition
-            let $path := document-uri(root($f))
-            group by $facet-grp := $f/@name
+<collection xmlns="http://exist-db.org/collection-config/1.0">
+    <index xmlns="http://exist-db.org/collection-config/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:srophe="https://srophe.app">
+        <lucene diacritics="no">
+            <module uri="http://srophe.org/srophe/facets" prefix="sf" at="xmldb:exist:///{$config:app-root}/modules/lib/facets.xql"/>
+            <text qname="tei:body">{
+            let $facets :=     
+                for $f in collection($config:app-root)//facet:facet-definition
+                let $path := document-uri(root($f))
+                group by $facet-grp := $f/@name
+                return 
+                    if($f[1]/facet:group-by/@function != '') then 
+                       <facet dimension="{functx:words-to-camel-case($facet-grp)}" expression="sf:facet(descendant-or-self::tei:body, {concat("'",$path[1],"'")}, {concat("'",$facet-grp,"'")})"/>
+                    else if($f[1]/facet:range) then
+                       <facet dimension="{functx:words-to-camel-case($facet-grp)}" expression="sf:facet(descendant-or-self::tei:body, {concat("'",$path[1],"'")}, {concat("'",$facet-grp,"'")})"/>                
+                    else 
+                        <facet dimension="{functx:words-to-camel-case($facet-grp)}" expression="{replace($f[1]/facet:group-by/facet:sub-path/text(),"&#34;","'")}"/>      
             return 
-                if($f[1]/facet:group-by/@function != '') then 
-                   <facet dimension="{functx:words-to-camel-case($facet-grp)}" expression="sf:facet(descendant-or-self::tei:body, {concat("'",$path[1],"'")}, {concat("'",$facet-grp,"'")})"/>
-                else 
-                    <facet dimension="{functx:words-to-camel-case($facet-grp)}" expression="{replace($f[1]/facet:group-by/facet:sub-path/text(),"&#34;","'")}"/>
-        let $fields := 
-            for $f in collection($config:app-root)//*:search-config/*:field
-            let $path := document-uri(root($f))
-            group by $field-grp := $f/@name
-            where $field-grp != 'keyword' and  $field-grp != 'fullText'
-            return 
-                if($f[1]/@function != '') then 
-                    <field name="{functx:words-to-camel-case($field-grp)}" expression="sf:field(descendant-or-self::tei:body, {concat("'",$path[1],"'")}, {concat("'",$field-grp,"'")})"/>
-                else 
-                    <field name="{functx:words-to-camel-case($field-grp)}" expression="{string($f[1]/@expression)}"/>
-        return 
-            ($facets(:,$fields :))
-        }
-                        <!-- Predetermined sort fields -->               
+                $facets
+            }              
+                <!-- Predetermined sort fields -->               
                 <field name="title" expression="sf:field(descendant-or-self::tei:body,'title')"/>
                 <field name="author" expression="sf:field(descendant-or-self::tei:body, 'author')"/>
-        </text>
-        <text qname="tei:fileDesc"/>
-        <text qname="tei:biblStruct"/>
-        <text qname="tei:publisher"/>
-        <text qname="tei:pubPlace"/>
-        <text qname="tei:div"/>
-        <text qname="tei:author" boost="2.0"/>
-        <text qname="tei:persName" boost="2.0"/>
-        <text qname="tei:placeName" boost="2.0"/>
-        <text qname="tei:title" boost="10.5"/>
-        <text qname="tei:desc" boost="1.0"/>
-        <text qname="tei:location"/>
-        <text qname="tei:event"/>
-        <text qname="tei:note"/>
-        <text qname="tei:term"/>
-    </lucene> 
-    <range>
-        <create qname="@syriaca-computed-start" type="xs:date"/>
-        <create qname="@syriaca-computed-end" type="xs:date"/>
-        <create qname="@type" type="xs:string"/>
-        <create qname="@ana" type="xs:string"/>
-        <create qname="@syriaca-tags" type="xs:string"/>
-        <create qname="@when" type="xs:string"/>
-        <create qname="@target" type="xs:string"/>
-        <create qname="@who" type="xs:string"/>
-        <create qname="@ref" type="xs:string"/>
-        <create qname="@uri" type="xs:string"/>
-        <create qname="@where" type="xs:string"/>
-        <create qname="@active" type="xs:string"/>
-        <create qname="@passive" type="xs:string"/>
-        <create qname="@mutual" type="xs:string"/>
-        <create qname="@name" type="xs:string"/>
-        <create qname="@xml:lang" type="xs:string"/>
-        <create qname="@status" type="xs:string"/>
-        <create qname="tei:idno" type="xs:string"/>
-        <create qname="tei:title" type="xs:string"/>
-        <create qname="tei:geo" type="xs:string"/>
-        <create qname="tei:relation" type="xs:string"/>
-        <create qname="tei:persName" type="xs:string"/>
-        <create qname="tei:placeName" type="xs:string"/>
-        <create qname="tei:author" type="xs:string"/>
-        <create qname="tei:num" type="xs:string"/>
-    </range>
-</index>
+            </text>
+            <text qname="tei:fileDesc"/>
+            <text qname="tei:biblStruct"/>
+            <text qname="tei:publisher"/>
+            <text qname="tei:pubPlace"/>
+            <text qname="tei:div"/>
+            <text qname="tei:author" boost="5.0"/>
+            <text qname="tei:persName" boost="5.0"/>
+            <text qname="tei:placeName" boost="5.0"/>
+            <text qname="tei:title" boost="10.5"/>
+            <text qname="tei:location"/>
+            <text qname="tei:desc" boost="2.0"/>
+            <text qname="tei:event"/>
+            <text qname="tei:note"/>
+            <text qname="tei:term"/>
+        </lucene> 
+        <range>
+            <create qname="@syriaca-computed-start" type="xs:date"/>
+            <create qname="@syriaca-computed-end" type="xs:date"/>
+            <create qname="@type" type="xs:string"/>
+            <create qname="@ana" type="xs:string"/>
+            <create qname="@syriaca-tags" type="xs:string"/>
+            <create qname="@srophe:tags" type="xs:string"/>
+            <create qname="@when" type="xs:string"/>
+            <create qname="@target" type="xs:string"/>
+            <create qname="@who" type="xs:string"/>
+            <create qname="@ref" type="xs:string"/>
+            <create qname="@uri" type="xs:string"/>
+            <create qname="@where" type="xs:string"/>
+            <create qname="@active" type="xs:string"/>
+            <create qname="@passive" type="xs:string"/>
+            <create qname="@mutual" type="xs:string"/>
+            <create qname="@name" type="xs:string"/>
+            <create qname="@xml:lang" type="xs:string"/>
+            <create qname="@level" type="xs:string"/>
+            <create qname="@status" type="xs:string"/>
+            <create qname="tei:idno" type="xs:string"/>
+            <create qname="tei:title" type="xs:string"/>
+            <create qname="tei:geo" type="xs:string"/>
+            <create qname="tei:relation" type="xs:string"/>
+            <create qname="tei:placeName" type="xs:string"/>
+            <create qname="tei:author" type="xs:string"/>
+            <create qname="tei:num" type="xs:string"/>
+        </range>
+    </index>
+</collection>
 };
 
 (:~ 
