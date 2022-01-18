@@ -274,11 +274,6 @@ declare function sf:facet-controlled-labels($element as item()*, $facet-definiti
     return util:eval(concat('$element/',$xpath))
 };
 
-declare function sf:field-uri($element as item()*, $facet-definition as item(), $name as xs:string){
-    let $langCode := $element/descendant::tei:person/tei:persName/@xml:lang
-    return (:global:odd2text():)''    
-};
-
 (: Display, output functions  :)
 declare function sf:display($result as item()*, $facet-definition as item()*) {
     let $facet-definitions := 
