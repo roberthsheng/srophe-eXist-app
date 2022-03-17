@@ -50,6 +50,29 @@ $("#email").validate({
 		}
 });
 
+
+//Load dynamic content
+$('.dynamicContent').each(function(index, element) { 
+    var url = $(this).data('url');
+    var current = $(this) 
+    $.get(url, function(data) {
+        $(current).html(data);    
+    }); 
+   });
+
+//Load dynamic content
+$('.getContent').click(function(index, element) { 
+    var url = $(this).data('url');
+    var current = $(this) 
+    $('.spinning').show();
+    $.get(url, function(data) {
+        $(current).html(data);
+        $('.spinning').hide();
+        console.log('Getting data...')
+    }); 
+   });
+   
+   
 //Reload only search-results-panel for research-tool form
 /* 
 $("#research-tool").submit(function(e){
