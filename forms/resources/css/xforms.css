@@ -165,34 +165,10 @@ fieldset {
     padding:.25em;
 }
 
-.modal-dialog{
-/* new custom width */
-    width: 950px;
-    position:inherit;
-    background-color:white;
-}
-
-/* 
-.modal-content {
-    max-height: 650px;
-    overflow-y: auto;
-    background:#fff;
-    padding: 28px 26px 33px 25px;
-}
-*/
-.modal-body {
-  max-height: 70vh; /* max 80% of the viewport height */
-  overflow-y: auto;
-  background:#fff;
-  padding: 28px 26px 33px 25px;
-}
-
 .modal-close {margin-top: -1em;}
 .modal-close .top {margin-top: -3em; border:1px solid red;}
 .modal-close a {
-    /*margin-top:-.5em;
-    margin-left:-.5em;*/
-    color:grey;
+color:grey;
 }
 
 .modal-close .xforms-label:before{
@@ -202,22 +178,7 @@ fieldset {
     margin-left:-.5em;
     color:grey;
 }
-/* Does not work */
-div.xforms-dialog {
-    position: fixed;
-}
-   
-.accordion .panel-heading[aria-expanded="false"] span.glyphicon-chevron-down,
-.accordion .panel-heading[aria-expanded="true"] span.glyphicon-chevron-right
-{
-    display: none;
-}
 
-.accordion .panel-heading[aria-expanded="true"] span.glyphicon-chevron-down,
-.accordion .panel-heading[aria-expanded="false"] span.glyphicon-chevron-right
-{
-    display: inline;
-}
 
 /* XSLT Forms styles */
 /*#xsltforms_debug {display:none;}*/

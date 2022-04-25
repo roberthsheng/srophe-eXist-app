@@ -36,80 +36,78 @@ declare variable $search:perpage {request:get-parameter('perpage', 20) cast as x
  : Updated for Architectura Sinica to display full list if no search terms
 :)
 declare %templates:wrap function search:search-data($node as node(), $model as map(*), $collection as xs:string?, $sort-element as xs:string?){
-    let $queryExpr := search:query-string($collection)     
-    let $hits := if($queryExpr != '') then 
-                     data:search($collection, $queryExpr,$sort-element)
-                 else data:search($collection, '',$sort-element)
+    let $queryExpr := search:query-string($collection) 
+    let $hits := util:eval($queryExpr)//tei:body[ft:query(., (),sf:facet-query())]      
+    let $sort := if($sort-element != '') then 
+                    $sort-element
+                 else if(request:get-parameter('sort-element', '') != '') then
+                    request:get-parameter('sort-element', '')
+                 else ()
     let $all := 
-                if($collection = 'keywords') then
-                    if(request:get-parameter('sort-element', '') = 'relevance' or  
-                        request:get-parameter('q', '') != '' or 
-                        request:get-parameter('term', '') != '' or 
-                        request:get-parameter('placeName', '') != '') then
-                        for $h in $hits
-                        let $score := ft:score($h) 
-                        order by $score descending
-                        return $h                                 
-                    else 
-                        for $h in $hits
-                        let $score := 
-                          if(request:get-parameter('sort-element', '') != '' and 
-                             request:get-parameter('sort-element', '') != 'relevance' and
-                             request:get-parameter('sort-element', '') != 'title'
-                             ) then
-                             global:build-sort-string(data:add-sort-options($h, request:get-parameter('sort-element', '')),'')
-                          else if($sort-element != '' and $sort-element != 'title') then 
-                             global:build-sort-string(data:add-sort-options($h[1],  $sort-element),'')
-                          else 
-                             if($h/descendant::tei:term[@xml:lang="zh-latn-pinyin"]) then 
-                                global:build-sort-string($h/descendant::tei:term[@xml:lang="zh-latn-pinyin"][1],'')
-                             else global:build-sort-string($h/descendant::tei:titleStmt/tei:title[1],'') 
-                          order by $score ascending
-                          return $h 
-                else 
-                    let $ids := 
-                        for $id in $hits 
-                        group by $idno := $id/descendant::tei:publicationStmt/tei:idno[@type='URI']
-                        return replace($idno,'/tei','')
-                    let $related := 
-                            (collection($config:data-root)//tei:TEI[descendant::tei:relation[@passive = $ids]] |
-                            collection($config:data-root)//tei:TEI[descendant::tei:relation[@active = $ids]] | 
-                            collection($config:data-root)//tei:TEI[descendant::tei:relation[@mutual = $ids]])
-                    return 
+        if($collection = 'places') then 
+            if((request:get-parameter('sort-element', '') != '' and request:get-parameter('sort-element', '') != 'relevance') or ($sort-element != '' and $sort-element != 'relevance')) then
+                for $hit in $hits/ancestor-or-self::tei:TEI
+                let $site := $hit/descendant::tei:relation[@ref="schema:containedInPlace"]/@passive
+                let $s := 
                         if(request:get-parameter('sort-element', '') = 'relevance' or  
                         request:get-parameter('q', '') != '' or 
                         request:get-parameter('term', '') != '' or 
-                        request:get-parameter('placeName', '') != '') then
-                            for $h in ($hits | $related)
-                            let $id := $h/descendant::tei:publicationStmt/tei:idno[@type='URI'][1]
-                            group by $de-dup := $id
-                            let $score := ft:score($h[1]) 
-                            order by $score descending
-                            return $h[1]   
-                        else 
-                            for $h in ($hits | $related)
-                            let $id := $h/descendant::tei:publicationStmt/tei:idno[@type='URI'][1]
-                            group by $de-dup := $id
-                            let $score :=
-                                    if(request:get-parameter('sort-element', '') != '' and 
-                                        request:get-parameter('sort-element', '') != 'relevance' and
-                                        request:get-parameter('sort-element', '') != 'title'
-                                        ) then
-                                        global:build-sort-string(data:add-sort-options($h, request:get-parameter('sort-element', '')),'')
-                                     else if($sort-element != '' and $sort-element != 'title') then 
-                                        global:build-sort-string(data:add-sort-options($h[1],  $sort-element),'')
-                                     else 
-                                        if($h/descendant::tei:term[@xml:lang="zh-latn-pinyin"]) then 
-                                           global:build-sort-string($h/descendant::tei:term[@xml:lang="zh-latn-pinyin"][1],'')
-                                        else global:build-sort-string($h/descendant::tei:titleStmt/tei:title[1],'') 
-                            order by $score ascending
-                            return $h[1]   
-    return  
+                        request:get-parameter('placeName', '') != '') then ft:score($hit)
+                        else if(contains($sort, 'author')) then ft:field($hit, "author")[1]
+                        else if($sort = 'title') then ft:field($hit, "title")  
+                                                (:
+                        else if($sort = 'pubPlace') then ft:field($hit, "pubPlace")
+                        else if($sort = 'pubDate') then ft:field($hit, "pubDate")
+                        :)
+                        else ft:field($hit, "title")                
+                order by $s collation 'http://www.w3.org/2013/collation/UCA'
+                return $hit    
+            else        
+                for $hit in $hits
+                order by ft:score($hit) descending
+                return $hit/ancestor-or-self::tei:TEI               
+        else 
+            if((request:get-parameter('sort-element', '') != '' and request:get-parameter('sort-element', '') != 'relevance') or ($sort-element != '' and $sort-element != 'relevance')) then 
+                for $hit in $hits/ancestor-or-self::tei:TEI
+                let $s := 
+                        if(request:get-parameter('sort-element', '') = 'relevance' or  
+                        request:get-parameter('q', '') != '' or 
+                        request:get-parameter('term', '') != '' or 
+                        request:get-parameter('placeName', '') != '') then ft:score($hit)
+                        else if(contains($sort, 'author')) then ft:field($hit, "author")[1]
+                        else if($sort = 'title') then ft:field($hit, "title")
+                        (:
+                        else if($sort = 'pubPlace') then ft:field($hit, "pubPlace")
+                        else if($sort = 'pubDate') then ft:field($hit, "pubDate")
+                        :)
+                        else ft:field($hit, "title")                
+                order by $s collation 'http://www.w3.org/2013/collation/UCA'
+                return $hit
+            else 
+                for $hit in $hits
+                order by ft:score($hit) descending
+                return $hit/ancestor-or-self::tei:TEI               
+    return 
         map {
                 "hits" : $all,
                 "query" : $queryExpr
-        } 
+        }
 };
+
+
+(: Group results by building site :)
+declare function search:group-results($node as node(), $model as map(*), $collection as xs:string?){
+    let $hits := $model("hits")
+    return 
+        map {"group-by-sites" :            
+                for $place in $hits 
+                let $site := $place/descendant::tei:relation[@ref="schema:containedInPlace"]/@passive
+                group by $facet-grp-p := $site[1]
+                let $label := global:get-label($site[1])
+                order by $label
+                return  $place } 
+};
+
 
 (:~ 
  : Builds results output
@@ -118,7 +116,6 @@ declare
     %templates:default("start", 1)
 function search:show-hits($node as node()*, $model as map(*), $collection as xs:string?, $kwic as xs:string?) {
 <div class="indent" id="search-results" xmlns="http://www.w3.org/1999/xhtml">
-    <!--<div>{search:query-string($collection)}</div>-->
     {
             if($collection = 'places') then 
                 let $hits := $model("group-by-sites") 
@@ -247,7 +244,7 @@ let $search-config := concat($config:app-root, '/', string(config:collection-var
 return
     if($collection != '') then 
         if($collection = 'places') then  
-            concat(data:build-collection-path(''),
+            concat(data:build-collection-path($collection),
             slider:date-filter(()),
             data:keyword-search(),
             data:element-search('placeName',request:get-parameter('placeName', '')),
@@ -289,17 +286,4 @@ return
         data:uri(),
         search:features()
         )
-};
-
-(: Group results by building site :)
-declare function search:group-results($node as node(), $model as map(*), $collection as xs:string?){
-    let $hits := $model("hits")
-    return 
-        map {"group-by-sites" :            
-                for $place in $hits 
-                let $site := $place/descendant::tei:relation[@ref="schema:containedInPlace"]/@passive
-                group by $facet-grp-p := $site[1]
-                let $label := global:get-label($site[1])
-                order by $label
-                return  $place } 
 };
