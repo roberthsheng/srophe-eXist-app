@@ -55,10 +55,6 @@ declare %templates:wrap function search:search-data($node as node(), $model as m
                         request:get-parameter('placeName', '') != '') then ft:score($hit)
                         else if(contains($sort, 'author')) then ft:field($hit, "author")[1]
                         else if($sort = 'title') then ft:field($hit, "title")  
-                                                (:
-                        else if($sort = 'pubPlace') then ft:field($hit, "pubPlace")
-                        else if($sort = 'pubDate') then ft:field($hit, "pubDate")
-                        :)
                         else ft:field($hit, "title")                
                 order by $s collation 'http://www.w3.org/2013/collation/UCA'
                 return $hit    
@@ -76,10 +72,8 @@ declare %templates:wrap function search:search-data($node as node(), $model as m
                         request:get-parameter('placeName', '') != '') then ft:score($hit)
                         else if(contains($sort, 'author')) then ft:field($hit, "author")[1]
                         else if($sort = 'title') then ft:field($hit, "title")
-                        (:
                         else if($sort = 'pubPlace') then ft:field($hit, "pubPlace")
                         else if($sort = 'pubDate') then ft:field($hit, "pubDate")
-                        :)
                         else ft:field($hit, "title")                
                 order by $s collation 'http://www.w3.org/2013/collation/UCA'
                 return $hit

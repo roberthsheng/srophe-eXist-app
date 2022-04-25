@@ -16,7 +16,7 @@ declare variable $sf:QUERY_OPTIONS := map {
 };
 
 (: Add sort fields to browse and search options. Used for sorting, add sort fields and functions, add sort function:)
-declare variable $sf:sortFields := map { "fields": ("title", "author") };
+declare variable $sf:sortFields := map { "fields": ("title", "author","pubPlace","pubDate") };
 
 (: ~ 
  : Build indexes for fields and facets as specified in facet-def.xml and search-config.xml files
@@ -45,6 +45,8 @@ declare function sf:build-index(){
                 <!-- Predetermined sort fields -->               
                 <field name="title" expression="sf:field(descendant-or-self::tei:body,'title')"/>
                 <field name="author" expression="sf:field(descendant-or-self::tei:body, 'author')"/>
+                <field name="pubPlace" expression="sf:field(descendant-or-self::tei:body,'pubPlace')"/>
+                <field name="pubDate" expression="sf:field(descendant-or-self::tei:body, 'pubDate')"/>
             </text>
             <text qname="tei:fileDesc"/>
             <text qname="tei:biblStruct"/>
@@ -491,3 +493,10 @@ declare function sf:facet-getNameFromURI($element as item()*, $facet-definition 
     return $title 
 };
 :)
+
+declare function sf:field-pubPlace($element as item()*, $name as xs:string){
+    $element/ancestor-or-self::tei:TEI/descendant::tei:biblStruct/descendant::tei:imprint[1]/descendant-or-self::tei:pubPlace[1]
+};
+declare function sf:field-pubDate($element as item()*, $name as xs:string){
+    $element/ancestor-or-self::tei:TEI/descendant::tei:biblStruct/descendant::tei:imprint[1]/descendant-or-self::tei:date[1]
+};
