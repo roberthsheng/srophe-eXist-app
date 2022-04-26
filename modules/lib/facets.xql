@@ -289,7 +289,8 @@ declare function sf:display($result as item()*, $facet-definition as item()*) {
                         let $facet-param := concat($param-name,'=',$label)
                         let $active := if(request:get-parameter($param-name, '') = $label) then 'active' else ()
                         let $url-params := 
-                            if($active) then replace(replace(replace(request:get-query-string(),encode-for-uri($label),''),concat($param-name,'='),''),'&amp;&amp;','&amp;') 
+                            if($active) then replace(replace(replace(request:get-query-string(),encode-for-uri($label),''),concat($param-name,'='),''),'&amp;&amp;','&amp;')
+                            else if(request:get-parameter('start', '')) then '&amp;start=1'
                             else concat($facet-param,'&amp;',request:get-query-string())
                         let $facetLabel := 
                             if(starts-with($label, $config:base-uri)) then 
