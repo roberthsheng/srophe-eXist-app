@@ -40,73 +40,16 @@ declare %templates:wrap function search:search-data($node as node(), $model as m
     let $hits := if($queryExpr != '') then 
                      data:search($collection, $queryExpr,$sort-element)
                  else data:search($collection, '',$sort-element)
-    let $all := 
-                if($collection = 'keywords') then
-                    if(request:get-parameter('sort-element', '') = 'relevance' or  
-                        request:get-parameter('q', '') != '' or 
-                        request:get-parameter('term', '') != '' or 
-                        request:get-parameter('placeName', '') != '') then
-                        for $h in $hits
-                        let $score := ft:score($h) 
-                        order by $score descending
-                        return $h                                 
-                    else 
-                        for $h in $hits
-                        let $score := 
-                          if(request:get-parameter('sort-element', '') != '' and 
-                             request:get-parameter('sort-element', '') != 'relevance' and
-                             request:get-parameter('sort-element', '') != 'title'
-                             ) then
-                             global:build-sort-string(data:add-sort-options($h, request:get-parameter('sort-element', '')),'')
-                          else if($sort-element != '' and $sort-element != 'title') then 
-                             global:build-sort-string(data:add-sort-options($h[1],  $sort-element),'')
-                          else 
-                             if($h/descendant::tei:term[@xml:lang="zh-latn-pinyin"]) then 
-                                global:build-sort-string($h/descendant::tei:term[@xml:lang="zh-latn-pinyin"][1],'')
-                             else global:build-sort-string($h/descendant::tei:titleStmt/tei:title[1],'') 
-                          order by $score ascending
-                          return $h 
-                else 
-                    let $ids := 
-                        for $id in $hits 
-                        group by $idno := $id/descendant::tei:publicationStmt/tei:idno[@type='URI']
-                        return replace($idno,'/tei','')
-                    let $related := 
-                            (collection($config:data-root)//tei:TEI[descendant::tei:relation[@passive = $ids]] |
-                            collection($config:data-root)//tei:TEI[descendant::tei:relation[@active = $ids]] | 
-                            collection($config:data-root)//tei:TEI[descendant::tei:relation[@mutual = $ids]])
-                    return 
-                        if(request:get-parameter('sort-element', '') = 'relevance' or  
-                        request:get-parameter('q', '') != '' or 
-                        request:get-parameter('term', '') != '' or 
-                        request:get-parameter('placeName', '') != '') then
-                            for $h in ($hits | $related)
-                            let $id := $h/descendant::tei:publicationStmt/tei:idno[@type='URI'][1]
-                            group by $de-dup := $id
-                            let $score := ft:score($h[1]) 
-                            order by $score descending
-                            return $h[1]   
-                        else 
-                            for $h in ($hits | $related)
-                            let $id := $h/descendant::tei:publicationStmt/tei:idno[@type='URI'][1]
-                            group by $de-dup := $id
-                            let $score :=
-                                    if(request:get-parameter('sort-element', '') != '' and 
-                                        request:get-parameter('sort-element', '') != 'relevance' and
-                                        request:get-parameter('sort-element', '') != 'title'
-                                        ) then
-                                        global:build-sort-string(data:add-sort-options($h, request:get-parameter('sort-element', '')),'')
-                                     else if($sort-element != '' and $sort-element != 'title') then 
-                                        global:build-sort-string(data:add-sort-options($h[1],  $sort-element),'')
-                                     else 
-                                        if($h/descendant::tei:term[@xml:lang="zh-latn-pinyin"]) then 
-                                           global:build-sort-string($h/descendant::tei:term[@xml:lang="zh-latn-pinyin"][1],'')
-                                        else global:build-sort-string($h/descendant::tei:titleStmt/tei:title[1],'') 
-                            order by $score ascending
-                            return $h[1]   
+    let $sites := for $h in $hits[descendant::tei:place[@type='site']]
+                  let $s := ft:field($h, "title")[1]                
+                  order by $s[1] collation 'http://www.w3.org/2013/collation/UCA'
+                  return $h 
+    let $allSites := collection('/db/apps/tcadrt-data/data/places/sites')//tei:TEI
     return  
         map {
-                "hits" : $all,
+                "hits" : $hits,
+                "sites" : $sites,
+                "allSites" : $allSites,
                 "query" : $queryExpr
         } 
 };
@@ -118,37 +61,51 @@ declare
     %templates:default("start", 1)
 function search:show-hits($node as node()*, $model as map(*), $collection as xs:string?, $kwic as xs:string?) {
 <div class="indent" id="search-results" xmlns="http://www.w3.org/1999/xhtml">
-    <!--<div>{search:query-string($collection)}</div>-->
     {
             if($collection = 'places') then 
-                let $hits := $model("group-by-sites") 
-                for $hit at $p in subsequence($hits, $search:start, $search:perpage)
-                let $site := $hit/descendant::tei:relation[@ref="schema:containedInPlace"]/@passive
-                group by $facet-grp-p := $site[1]
-                let $label := global:get-label($site[1])
-                order by $label
-                return
-                    if($site != '') then 
+                if(count($model("sites")) = 0 and count($model("hits")) != 0) then
+                    for $hit at $p in subsequence($model("hits"), $search:start, $search:perpage)
+                    let $idno := replace($hit/descendant::tei:idno[1],'/tei','')
+                    let $title := $hit/descendant::tei:title[1]/text()
+                    let $siteIdno := $hit/descendant::tei:relation[@ref="schema:containedInPlace"]/@passive
+                    let $site := $model("allSites")[descendant::tei:idno[.= $siteIdno]][1]
+                    let $siteTitle := $hit[1]/descendant::tei:title[1]/text()
+                    group by $facet-grp-p := $siteIdno[1]
+                    order by $siteTitle[1]
+                    return 
                         <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
-                                <a class="togglelink text-info" 
-                                data-toggle="collapse" data-target="#show{replace($label,' ','')}" 
-                                href="#show{replace($label,' ','')}" data-text-swap=" + "> - </a>&#160; 
-                                <a href="{replace($facet-grp-p,$config:base-uri,$config:nav-base)}">{$label}</a> (contains {count($hit)} artifact(s))
-                                <div class="indent collapse in" style="background-color:#F7F7F9;" id="show{replace($label,' ','')}">{
-                                    for $p in $hit
-                                    let $id := replace($p/descendant::tei:idno[1],'/tei','')
-                                    return 
-                                        <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view(root($p), '', $id)}</div>
-                                }</div>
-                        </div>
-                    else if($site = '' or not($site)) then
-                        for $p in $hit
-                        let $id := replace($p/descendant::tei:idno[1],'/tei','')
-                        return
-                                <div class="col-md-11" style="margin-right:-1em; padding-top:.5em;">
-                                     {tei2html:summary-view(root($p), '', $id)}
-                                </div>                        
-                    else ()
+                            <a class="togglelink text-info" 
+                                    data-toggle="collapse" data-target="#show{$facet-grp-p}" 
+                                    href="#show{$facet-grp-p}" data-text-swap=" + "> - </a>&#160; 
+                                    <a href="{replace($idno[1],$config:base-uri,$config:nav-base)}">{$siteTitle[1]}</a> (contains {count($hit)} artifact(s))
+                                    <div class="indent collapse in" style="background-color:#F7F7F9;" id="show{$facet-grp-p}">{
+                                        for $p in $hit
+                                        let $id := replace($p/descendant::tei:idno[1],'/tei','')
+                                        return 
+                                            <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view(root($p), '', $id)}</div>
+                                    }</div>
+                        </div>   
+                else 
+                    let $hits := $model("sites") 
+                    for $hit at $p in subsequence($hits, $search:start, $search:perpage)
+                    let $title := $hit/descendant::tei:title[1]/text()
+                    let $idno := replace($hit/descendant::tei:idno[1],'/tei','') 
+                    let $children := 
+                        $model("hits")[descendant::tei:relation[@ref="schema:containedInPlace"][@passive = $idno]]
+                        (:<relation ana="contained" active="https://architecturasinica.org/place/000020b" ref="schema:containedInPlace" passive="https://architecturasinica.org/place/000020"/>:)
+                    return 
+                        <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
+                            <a class="togglelink text-info" 
+                                    data-toggle="collapse" data-target="#show{$idno}" 
+                                    href="#show{$idno}" data-text-swap=" + "> - </a>&#160; 
+                                    <a href="{replace($idno,$config:base-uri,$config:nav-base)}">{$title}</a> (contains {count($children)} artifact(s))
+                                    <div class="indent collapse in" style="background-color:#F7F7F9;" id="show{$idno}">{
+                                        for $p in $children
+                                        let $id := replace($p/descendant::tei:idno[1],'/tei','')
+                                        return 
+                                            <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view(root($p), '', $id)}</div>
+                                    }</div>
+                        </div>                      
             else 
                 let $hits := $model("hits")
                 for $hit at $p in subsequence($hits, $search:start, $search:perpage)
@@ -247,7 +204,7 @@ let $search-config := concat($config:app-root, '/', string(config:collection-var
 return
     if($collection != '') then 
         if($collection = 'places') then  
-            concat(data:build-collection-path(''),
+            concat(data:build-collection-path($collection),
             slider:date-filter(()),
             data:keyword-search(),
             data:element-search('placeName',request:get-parameter('placeName', '')),
@@ -291,15 +248,3 @@ return
         )
 };
 
-(: Group results by building site :)
-declare function search:group-results($node as node(), $model as map(*), $collection as xs:string?){
-    let $hits := $model("hits")
-    return 
-        map {"group-by-sites" :            
-                for $place in $hits 
-                let $site := $place/descendant::tei:relation[@ref="schema:containedInPlace"]/@passive
-                group by $facet-grp-p := $site[1]
-                let $label := global:get-label($site[1])
-                order by $label
-                return  $place } 
-};
