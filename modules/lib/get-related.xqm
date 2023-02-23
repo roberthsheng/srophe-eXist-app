@@ -294,8 +294,8 @@ let $related := (:util:eval($eval-string):) data:search((), $eval-string, 'title
 
 let $total := count($related)    
 let $label := if($label != '') then $label else 'External relationships'
-let $start := if(request:get-parameter('start', 1)) then xs:integer(request:get-parameter('start', 1)) else 1
-let $perpage := if(request:get-parameter('perpage', 25)) then xs:integer(request:get-parameter('perpage', 25)) else 25
+let $start := if(request:get-parameter('start', 1)) then xs:integer(request:get-parameter('start', 1)[1]) else 1
+let $perpage := if(request:get-parameter('perpage', 25)) then xs:integer(request:get-parameter('perpage', 25)[1]) else 25
 let $params := 
     string-join(
     for $param in request:get-parameter-names()

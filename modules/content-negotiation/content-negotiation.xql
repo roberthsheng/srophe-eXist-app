@@ -25,9 +25,9 @@ declare namespace tei = "http://www.tei-c.org/ns/1.0";
 declare namespace rest = "http://exquery.org/ns/restxq";
 declare namespace http="http://expath.org/ns/http-client";
 
-declare variable $start {request:get-parameter('start', 1) cast as xs:integer};
-declare variable $perpage {request:get-parameter('perpage', 20) cast as xs:integer};
-declare variable $sort {request:get-parameter('sort-element', '') cast as xs:string};
+declare variable $start {request:get-parameter('start', 1)[1] cast as xs:integer};
+declare variable $perpage {request:get-parameter('perpage', 20)[1] cast as xs:integer};
+declare variable $sort {request:get-parameter('sort-element', '')[1] cast as xs:string};
 
 
 let $path := if(request:get-parameter('id', '')  != '') then 

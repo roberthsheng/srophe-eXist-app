@@ -49,7 +49,7 @@ body {font-family: arial, sans-serif; background-color:#fff; }
     }
 
 /* Navbar styles*/
-.navbar {margin-left: 0; padding-left: 0; border-bottom:15px solid #771210 !important;   background-color:#fff  !important; color:#333 !important;}
+.navbar {margin-left: 0; padding-left: 0; border-bottom:20px solid #771210 !important;   background-color:#fff  !important; color:#333 !important;}
 .navbar-brand {margin-top:-.75em; padding-left:0; margin-left:0; margin-right:-2em;}
 .navbar-brand img {padding:0; margin:0; }
 .brand {margin-top:-.75em; margin-left:40px; padding-left:0;}

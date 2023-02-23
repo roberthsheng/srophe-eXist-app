@@ -5,7 +5,7 @@ xquery version "3.1";
 module namespace search="http://srophe.org/srophe/search";
 
 (:eXist templating module:)
-import module namespace templates="http://exist-db.org/xquery/templates" ;
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 
 (: Import KWIC module:)
 import module namespace kwic="http://exist-db.org/xquery/kwic";
@@ -24,8 +24,8 @@ import module namespace tei2html="http://srophe.org/srophe/tei2html" at "../cont
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (: Variables:)
-declare variable $search:start {request:get-parameter('start', 1) cast as xs:integer};
-declare variable $search:perpage {request:get-parameter('perpage', 20) cast as xs:integer};
+declare variable $search:start {request:get-parameter('start', 1)[1] cast as xs:integer};
+declare variable $search:perpage {request:get-parameter('perpage', 20)[1] cast as xs:integer};
 
 (:~
  : Builds search result, saves to model("hits") for use in HTML display
@@ -35,7 +35,7 @@ declare variable $search:perpage {request:get-parameter('perpage', 20) cast as x
  : Search results stored in map for use by other HTML display functions
  : Updated for Architectura Sinica to display full list if no search terms
 :)
-declare %templates:wrap function search:search-data($node as node(), $model as map(*), $collection as xs:string?, $sort-element as xs:string?){
+declare %templates:wrap function search:search-data($node as node(), $model as map(*), $collection as xs:string*, $sort-element as xs:string*){
     let $queryExpr := search:query-string($collection)     
     let $hits := if($queryExpr != '') then 
                      data:search($collection, $queryExpr,$sort-element)
@@ -44,12 +44,10 @@ declare %templates:wrap function search:search-data($node as node(), $model as m
                   let $s := ft:field($h, "title")[1]                
                   order by $s[1] collation 'http://www.w3.org/2013/collation/UCA'
                   return $h 
-    let $allSites := collection('/db/apps/tcadrt-data/data/places/sites')//tei:TEI
     return  
         map {
                 "hits" : $hits,
                 "sites" : $sites,
-                "allSites" : $allSites,
                 "query" : $queryExpr
         } 
 };
@@ -68,7 +66,8 @@ function search:show-hits($node as node()*, $model as map(*), $collection as xs:
                     let $idno := replace($hit/descendant::tei:idno[1],'/tei','')
                     let $title := $hit/descendant::tei:title[1]/text()
                     let $siteIdno := $hit/descendant::tei:relation[@ref="schema:containedInPlace"]/@passive
-                    let $site := $model("allSites")[descendant::tei:idno[.= $siteIdno]][1]
+                    let $site := (:$model("allSites")[descendant::tei:idno[.= $siteIdno]][1]:)
+                                 root(collection($config:data-root || '/places/sites')//tei:idno[. = $siteIdno][1])
                     let $siteTitle := $hit[1]/descendant::tei:title[1]/text()
                     group by $facet-grp-p := $siteIdno[1]
                     order by $siteTitle[1]
@@ -90,8 +89,9 @@ function search:show-hits($node as node()*, $model as map(*), $collection as xs:
                     for $hit at $p in subsequence($hits, $search:start, $search:perpage)
                     let $title := $hit/descendant::tei:title[1]/text()
                     let $idno := replace($hit/descendant::tei:idno[1],'/tei','') 
-                    let $children := 
-                        $model("hits")[descendant::tei:relation[@ref="schema:containedInPlace"][@passive = $idno]]
+                    let $children :=
+                         collection($config:data-root)//tei:relation[@ref="schema:containedInPlace"][@passive = $idno]
+                         (: $model("hits")//tei:relation[@ref="schema:containedInPlace"][@passive = $idno]:)
                         (:<relation ana="contained" active="https://architecturasinica.org/place/000020b" ref="schema:containedInPlace" passive="https://architecturasinica.org/place/000020"/>:)
                     return 
                         <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">

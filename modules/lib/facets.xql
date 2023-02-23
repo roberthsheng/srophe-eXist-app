@@ -57,17 +57,13 @@ declare function sf:build-index(){
             <text qname="tei:title" boost="10.5"/>
             <text qname="tei:location"/>
             <text qname="tei:desc" boost="2.0"/>
-            <text qname="tei:event"/>
             <text qname="tei:note"/>
             <text qname="tei:term"/>
         </lucene> 
         <range>
-            <create qname="@syriaca-computed-start" type="xs:date"/>
-            <create qname="@syriaca-computed-end" type="xs:date"/>
             <create qname="@type" type="xs:string"/>
             <create qname="@ana" type="xs:string"/>
             <create qname="@syriaca-tags" type="xs:string"/>
-            <create qname="@srophe:tags" type="xs:string"/>
             <create qname="@when" type="xs:string"/>
             <create qname="@target" type="xs:string"/>
             <create qname="@who" type="xs:string"/>
@@ -88,6 +84,16 @@ declare function sf:build-index(){
             <create qname="tei:placeName" type="xs:string"/>
             <create qname="tei:author" type="xs:string"/>
             <create qname="tei:num" type="xs:string"/>
+            <create qname="tei:trait" type="xs:string"/>
+            <create qname="tei:relation">
+                <field name="relation-ref" match="@ref" type="xs:string"/>
+                <field name="relation-active" match="@active" type="xs:string"/>
+                <field name="relation-passive" match="@passive" type="xs:string"/>
+                <field name="relation-mutual" match="@mutual" type="xs:string"/>
+              </create>
+            <create qname="tei:trait">
+                <field name="relation-type" match="@type" type="xs:string"/>
+            </create>
         </range>
     </index>
 </collection>
