@@ -103,7 +103,7 @@ declare function data:build-collection-path($collection as xs:string?) as xs:str
  : @param $collection collection to limit results set by
  : @param $element TEI element to base sort order on. 
 :)
-declare function data:get-records($collection as xs:string*, $element as xs:string?){
+declare function data:get-records($collection as xs:string*, $element as xs:string*){
     let $element := data:element($element)
     let $sort := 
         if(request:get-parameter('sort', '') != '') then request:get-parameter('sort', '') 
@@ -146,7 +146,7 @@ declare function data:get-records($collection as xs:string*, $element as xs:stri
  : Build a search XPath based on search parameters. 
  : Add sort options. 
 :)
-declare function data:search($collection as xs:string*, $queryString as xs:string?, $sort-element as xs:string?) {     
+declare function data:search($collection as xs:string*, $queryString as xs:string*, $sort-element as xs:string*) {     
     let $eval-string := if($queryString != '') then $queryString 
                         else concat(data:build-collection-path($collection), data:create-query($collection),slider:date-filter(()))
     let $hits :=

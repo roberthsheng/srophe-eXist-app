@@ -22,13 +22,21 @@ declare namespace xlink = "http://www.w3.org/1999/xlink";
 :)
 declare function page:pages(
     $hits as node()*, 
-    $collection as xs:string?,
-    $start as xs:integer?, 
-    $perpage as xs:integer?, 
+    $collection as xs:string*,
+    $start as xs:integer*, 
+    $perpage as xs:integer*, 
     $search-string as xs:string*,
     $sort-options as xs:string*){
-let $perpage := if($perpage) then xs:integer($perpage) else 20
-let $start := if($start) then $start else 1
+let $perpage := if($perpage) then 
+                    if($perpage[1] castable as xs:integer) then 
+                        xs:integer($perpage[1]) 
+                    else 20
+                 else 20
+let $start := if($start) then 
+                if($start[1] castable as xs:integer) then 
+                    xs:integer($start[1]) 
+                else 1 
+              else 1
 let $total-result-count := count($hits)
 let $end := 
     if ($total-result-count lt $perpage) then 
@@ -111,7 +119,7 @@ return $pagination-links
  : $param @start start number passed from url 
  : $param @options include search options a comma separated list
 :)
-declare function page:sort($param-string as xs:string?, $start as xs:integer?, $options as xs:string*){
+declare function page:sort($param-string as xs:string*, $start as xs:integer*, $options as xs:string*){
 <li xmlns="http://www.w3.org/1999/xhtml">
     <div class="btn-group">
         <div class="dropdown"><button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Sort <span class="caret"/></button>

@@ -24,7 +24,7 @@ declare option exist:serialize "method=xml media-type=application/rss+xml omit-x
  : @param $perpage number of pages to return 
  : @return An atom entry element
 :)
-declare function feed:build-search-feed($nodes as node()*,$start as xs:integer?, $perpage as xs:integer?){
+declare function feed:build-search-feed($nodes as node()*,$start as xs:integer*, $perpage as xs:integer*){
     for $rec in subsequence($nodes,$start, $perpage)
     return feed:build-entry($rec)
 };
