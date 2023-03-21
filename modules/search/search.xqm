@@ -90,7 +90,7 @@ function search:show-hits($node as node()*, $model as map(*), $collection as xs:
                     let $title := $hit/descendant::tei:title[1]/text()
                     let $idno := replace($hit/descendant::tei:idno[1],'/tei','') 
                     let $children :=
-                         collection($config:data-root)//tei:relation[@ref="schema:containedInPlace"][@passive = $idno]
+                         collection($config:data-root)//tei:TEI[.//tei:relation[@ref="schema:containedInPlace"][@passive = $idno]]
                          (: $model("hits")//tei:relation[@ref="schema:containedInPlace"][@passive = $idno]:)
                         (:<relation ana="contained" active="https://architecturasinica.org/place/000020b" ref="schema:containedInPlace" passive="https://architecturasinica.org/place/000020"/>:)
                     return 
