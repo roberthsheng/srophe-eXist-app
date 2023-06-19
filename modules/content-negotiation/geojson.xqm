@@ -33,7 +33,7 @@ declare function geojson:json-wrapper($nodes as node()*) as element()*{
         <type>FeatureCollection</type>
         <features>
             {
-            let $nodes := $nodes[descendant-or-self::tei:geo]
+            let $nodes := $nodes[.//tei:geo]
             let $count := count($nodes)
             for $n in $nodes
             return geojson:geojson-object($n, $count)}
@@ -52,17 +52,10 @@ declare function geojson:json-wrapper($nodes as node()*) as element()*{
   </place>
 :)
 declare function geojson:geojson-object($node as node()*, $count as xs:integer?) as element()*{
-let $id := ($node//tei:idno[@type='URI'],$node//tei:idno)[1]
-let $title := $node//tei:titleStmt/tei:title[1]
-let $desc := if($node//tei:desc[1]/tei:quote) then 
-                concat('"',$node/descendant::tei:desc[1]/tei:quote,'"')
-             else $node/descendant::tei:desc[1]
-let $type := $node//tei:trait[@type='type']//tei:desc[@xml:lang="en"]/text()
-(:              
-let $image := if($node/descendant::tei:relation[@ref="foaf:depicts"][@ana = 'featured']) then 
-                '<img src="{replace($node//tei:relation[@ref="foaf:depicts"][@ana = 'featured']/@active,'_z.jpg','_t.jpg')}"/>'
-              else ()  
-:)              
+let $id := ($node/descendant::tei:idno[@type='URI'], $node/descendant::tei:idno)[1]
+let $title := $node/descendant::tei:title[1]
+let $desc := $node/descendant::tei:desc[1]
+let $type := $node//tei:trait[@type='type']//tei:desc[@xml:lang="en"]/text()    
 let $coords := $node//tei:geo[1]
 return 
     <json:value>
