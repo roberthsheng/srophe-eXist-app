@@ -152,6 +152,9 @@ declare function tei2html:summary-view($nodes as node()*, $lang as xs:string?, $
     return 
         <div class="short-rec-view">
             <!--<div>{string($nodes/@sort)}</div>-->
+            {if(contains($id,'/image/')) then
+                <img src="{$nodes//tei:idno[@type='thumbnail']}"/>
+            else ()}
             <a href="{replace($id,$config:base-uri,$config:nav-base)}" dir="ltr">{$title}</a>
             {if($nodes/descendant::tei:entryFree) then 
                 concat(' (',replace(string($nodes/descendant::tei:entryFree/@type),'-',' '),')')
