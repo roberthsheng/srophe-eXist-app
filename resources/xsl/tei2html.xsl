@@ -469,7 +469,7 @@
         <xsl:if test="//t:objectIdentifier/t:idno[@type='iiif']">
             <div class="iiif-image">
                 <img src="{//t:objectIdentifier/t:idno[@type='iiif']}" alt="{//t:objectIdentifier/t:objectName}" width="80%"></img>
-                <p><a href="#">View in Mirador [forthcomming]</a></p>
+                <p><a href="https://projectmirador.org/embed/?iiif-content={//t:relation[@ref='manifest']/@active}">View in Mirador</a></p>
             </div>
         </xsl:if>
         
