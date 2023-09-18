@@ -145,9 +145,11 @@ declare %templates:wrap function search:architectural-features($node as node()*,
                 <h4 class="indent">{string($group-type)}</h4>
                 {
                     for $f in $feature
-                    let $title := string-join($f/descendant::tei:titleStmt/tei:title[1]//text(),' ')
+                    let $title-en := $f/descendant::tei:entryFree/tei:term[@xml:lang='zh-latn-pinyin'][not(@type='alternate')][1]/text()
+                    let $title-zh := $f/descendant::tei:entryFree/tei:term[@xml:lang='zh-Hant'][1]/text()
+                    let $title := concat($title-en, ' ', $title-zh)
                     let $id := replace($f/descendant::tei:idno[1],'/tei','')
-                    order by $title descending
+                    order by $title-en ascending collation 'http://www.w3.org/2013/collation/UCA'
                     return 
                         <div class="form-group row">
                             <div class="col-sm-4 col-md-3" style="text-align:right;">
