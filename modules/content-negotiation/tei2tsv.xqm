@@ -130,11 +130,11 @@ return concat($headers,($data))
 
 declare function tei2tsv:tei2tsv-keywords($nodes as node()*) {
 let $headers :=concat(string-join(
-                ('title', 'uri','principal','principal2','principal3','editor', 'editor2', 'editor3', 'published','team',
+                ('title', 'uri','principal','editor', 'editor2', 'editor3', 'published','team',
                  'term-en','term-literal_translation','term-zh-latn-pinyin','term-zh-Hant',
                  'term-zh-Hans','term-Wade-Giles','term-other','term-other2','term-other3','term-other4',
                  'term-other5','term-other6','term-other7','term-other8','term-other9','term-other10',
-                 'note','note-en','getty-scopeNote-en','getty-scopeNote-zh-hant',
+                 'note','note-en','note-zh-Hant','getty-scopeNote-en','getty-scopeNote-zh-hant',
                  'sources-note-en','sources-note-zh-hant',
                  'scope-note-brief-en','scope-note-brief-zh-hant',
                  'scope-note-full-en','scope-note-full-zh-hant',
