@@ -233,7 +233,7 @@ let $data :=
         concat(
             string-join(($title,$uri,$principal,$editor,$editor2,$editor3,$published,$team,
             $term1,$term2,$term3,$term4,$term5,$term6,
-            $term7,$term8,$term9,$term10,$term11,$term12,$term13,$term14,$term15,$term16,$note,$note-en,$note-zh-Hant,$getty-scopeNote-en,$getty-scopeNote-zh-hant,
+            $term7,$term8,$term9,$term10,$term11,$term12,$term13,$term14,$term15,$term16,$note,$note-en,$note-zh-hant,$getty-scopeNote-en,$getty-scopeNote-zh-hant,
             $sources-note-en,$sources-note-zh-hant,$scope-note-brief-en,$scope-note-brief-zh-hant,    
             $scope-note-full-en,$scope-note-full-zh-hant,
             $note-brief-en,$note-brief-zh-hant,$note-full-en,$note-full-zh-hant,
