@@ -1,69 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
-    <div class="padding-top" style="display: flex;">   
-        <!-- Left Column -->
-        <div class="col-md-3 sidebar">
-            <h1 class="terminology-title">Terminology</h1>
-            
-            <!-- Search Form -->
-            <div class="search-container">
-                <form method="get" action="terminology.html" role="form">
-                    <div class="form-group">
-                        <label for="qs">Keywords</label>
-                        <input type="text" id="qs" name="q" class="form-control keyboard"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="term">Architectural Feature</label>
-                        <input type="text" id="term" name="term" class="form-control keyboard"/>
-                    </div>
-                    <button type="submit" class="btn btn-success btn-block">Search</button>
-                </form>
-            </div>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude" data-template="templates:surround"
+    data-template-with="templates/page.html" data-template-at="content">
+    <div class="padding-top" style="display: flex; margin-top: 0;">
+        <div data-template="search:search-data" data-template-collection="keywords" data-template-sort-element="title">
+            <!-- Sidebar with red background -->
+            <div class="col-md-3 sidebar"
+                style="background-color: #702020; padding: 20px; height: 100vh; position: fixed; color: white;">
+                <h1 class="terminology-title"
+                    style="color: white; font-size: 28px; margin-bottom: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    Terminology</h1>
 
-            <!-- Categories -->
-            <div class="categories">
-                <h4>Architectural Feature</h4>
-                <div class="category-list">
-                    <div class="category-item">
-                        <a href="#" class="category-header">▾ Building Frame</a>
-                        <div class="subcategory-list">
-                            <a href="?facet-searchCategory=architectural+feature&amp;facet-keywordCategory=building+frame">All Building Frame</a>
-                            <a href="?facet-searchCategory=architectural+feature&amp;facet-keywordCategory=bracketing">Bracketing</a>
-                            <a href="?facet-searchCategory=architectural+feature&amp;facet-keywordCategory=foundation">Foundation</a>
+                <!-- Search Form -->
+                <div class="search-container" style="margin-bottom: 30px;">
+                    <form method="get" action="terminology.html" role="form">
+                        <div class="form-group">
+                            <label for="qs" style="color: white;">Keywords</label>
+                            <input type="text" id="qs" name="q" class="form-control keyboard"
+                                style="width: 100%; border: none; border-radius: 4px; margin-bottom: 10px;" />
                         </div>
-                    </div>
-                    <div class="category-item">
-                        <a href="#" class="category-header">▾ Time Period</a>
-                        <div class="subcategory-list">
-                            <a href="?facet-searchCategory=time+period">All Time Periods</a>
+                        <div class="form-group">
+                            <label for="term" style="color: white;">Architectural Feature</label>
+                            <input type="text" id="term" name="term" class="form-control keyboard"
+                                style="width: 100%; border: none; border-radius: 4px; margin-bottom: 10px;" />
                         </div>
-                    </div>
-                    <div class="category-item">
-                        <a href="#" class="category-header">▾ Building Type</a>
-                        <div class="subcategory-list">
-                            <a href="?facet-searchCategory=building+type">All Building Types</a>
-                        </div>
-                    </div>
-                    <div class="category-item">
-                        <a href="#" class="category-header">▾ Site Type</a>
-                        <div class="subcategory-list">
-                            <a href="?facet-searchCategory=site+type">All Site Types</a>
-                        </div>
+                        <button type="submit" class="btn btn-success btn-block"
+                            style="background-color: #4CAF50; border: none;">Search</button>
+                        <button type="reset" class="btn btn-info btn-block"
+                            style="margin-top: 10px; border: none;">Clear</button>
+                    </form>
+                </div>
+
+                <!-- Dynamic Categories with Improved Style -->
+                <div id="category-list" style="color: white; margin-top: 5px;">
+                    <div data-template="app:display-facets" data-template-collection="keywords"
+                        data-template-facets="facet-def.xml" style="margin-top: 10px;">
+                        <!-- Styling for categories -->
+                        <!-- moved inline styles to main stylesheet -->
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Right Column -->
-        <div class="col-md-9 main-content">
-            <div data-template="search:search-data" data-template-collection="keywords" data-template-sort-element="title">
-                <div id="search-results-panel">
-                    <div data-template="app:pageination" data-template-search-string="yes" data-template-collection="keywords" data-template-sort-options="relevance,title"/>
+            <!-- Main content area for results, pushed further right -->
+            <div class="col-md-9 main-content" style="margin-left: 60%; padding: 20px;">
+                <div id="search-results-panel" style="width: 100%;"> <!-- Adjust width for full fit -->
+                    <div data-template="app:pageination" data-template-search-string="yes"
+                        data-template-collection="keywords" data-template-sort-options="relevance,title"></div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div data-template="search:show-hits" data-template-collection="keywords"/>
+                            <div data-template="search:show-hits" data-template-collection="keywords"
+                                style="width: 100%;"></div>
                             <div class="page-bottom">
-                                <div data-template="app:pageination" data-template-collection="keywords"/>
+                                <div data-template="app:pageination" data-template-collection="keywords"></div>
                             </div>
                         </div>
                     </div>
@@ -86,15 +73,17 @@
 
         .terminology-title {
             color: white;
-            font-size: min(48px, 4.5vw);
+            font-size: 28px;
             margin-bottom: 40px;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             line-height: 1.2;
         }
 
         /* Search Form Styles */
         .search-container {
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(255, 255, 255, 0.2);
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 30px;
@@ -114,60 +103,33 @@
             border-radius: 4px;
         }
 
-        /* Category Styles */
-        .categories {
+        /* Dynamic Category Styles */
+        #category-list h4 {
             color: white;
-        }
-
-        .categories h4 {
-            margin-bottom: 15px;
             font-weight: bold;
-        }
-
-        .category-list {
-            padding-left: 15px;
-        }
-
-        .category-item {
             margin-bottom: 15px;
         }
 
-        .category-header {
-            color: white;
+        #category-list a {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 8px 10px;
             display: block;
-            padding: 5px 0;
             text-decoration: none;
-            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 5px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .category-header:hover {
-            color: #ddd;
-            text-decoration: none;
-        }
-
-        .subcategory-list {
-            display: none;
-            padding-left: 20px;
-        }
-
-        .subcategory-list a {
-            color: rgba(255,255,255,0.8);
-            display: block;
-            padding: 5px 0;
-            text-decoration: none;
-            font-size: 0.95em;
-        }
-
-        .subcategory-list a:hover {
-            color: white;
-            text-decoration: none;
+        #category-list a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
         }
 
         /* Main Content Styles */
         .main-content {
             margin-left: 25%;
             padding: 20px 30px;
-            margin-top: 60px;
         }
 
         /* Results Styles */
@@ -202,11 +164,10 @@
 
             .main-content {
                 margin-left: 0;
-                margin-top: 0;
             }
 
             .terminology-title {
-                font-size: 36px;
+                font-size: 24px;
             }
         }
 
@@ -227,15 +188,15 @@
     </style>
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Toggle subcategories
-            $('.category-header').click(function(e) {
+            $('.category-header').click(function (e) {
                 e.preventDefault();
                 $(this).siblings('.subcategory-list').slideToggle(200);
-                
+
                 // Toggle arrow
                 var text = $(this).text();
-                if(text.startsWith('▾')) {
+                if (text.startsWith('▾')) {
                     $(this).text(text.replace('▾', '▸'));
                 } else {
                     $(this).text(text.replace('▸', '▾'));
@@ -244,7 +205,7 @@
 
             // Show active category's subcategories
             var urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.has('facet-searchCategory')) {
+            if (urlParams.has('facet-searchCategory')) {
                 let category = urlParams.get('facet-searchCategory');
                 $(`a[href*="${category}"]`).closest('.category-item').find('.subcategory-list').show();
             }
