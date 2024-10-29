@@ -35,22 +35,50 @@
                     <div data-template="app:display-facets" data-template-collection="keywords"
                         data-template-facets="facet-def.xml" style="margin-top: 10px;">
                         <!-- Styling for categories -->
-                        <!-- moved inline styles to main stylesheet -->
+                        <style>
+                            #category-list h4 {
+                                color: white;
+                                font-weight: bold;
+                                margin-bottom: 15px;
+                            }
+
+                            #category-list a {
+                                color: rgba(255, 255, 255, 0.9);
+                                font-size: 15px;
+                                padding: 10px 15px;
+                                text-decoration: none;
+                                display: block;
+                                margin: 6px 0;
+                                background-color: rgba(255, 255, 255, 0.15);
+                                border-radius: 8px;
+                                transition: background-color 0.3s, color 0.3s;
+                                font-weight: 500;
+                            }
+
+                            #category-list a:hover {
+                                background-color: rgba(255, 255, 255, 0.3);
+                                color: #fff;
+                            }
+
+                            #category-list .category-item {
+                                margin-top: 10px;
+                            }
+                        </style>
                     </div>
                 </div>
             </div>
 
-            <!-- Main content area for results, pushed further right -->
-            <div class="col-md-9 main-content" style="margin-left: 60%; padding: 20px;">
-                <div id="search-results-panel" style="width: 100%;"> <!-- Adjust width for full fit -->
+            <!-- Main content area for results with padding and width adjustments -->
+            <div class="col-md-9 main-content" style="margin-left: 80%; padding: 40px 20px 20px; width: 275%;"> <!-- Updated margin and width -->
+                <div id="search-results-panel" style="width: 100%;"> <!-- Extend results to full width -->
                     <div data-template="app:pageination" data-template-search-string="yes"
                         data-template-collection="keywords" data-template-sort-options="relevance,title"></div>
                     <div class="row">
                         <div class="col-md-12">
                             <div data-template="search:show-hits" data-template-collection="keywords"
-                                style="width: 100%;"></div>
+                                style="width: 100%; padding-left: 10px; padding-right: 10px; line-height: 1.5em;" /> <!-- Added padding to separate result number and title -->
                             <div class="page-bottom">
-                                <div data-template="app:pageination" data-template-collection="keywords"></div>
+                                <div data-template="app:pageination" data-template-collection="keywords" />
                             </div>
                         </div>
                     </div>
@@ -106,8 +134,6 @@
         /* Dynamic Category Styles */
         #category-list h4 {
             color: white;
-            font-weight: bold;
-            margin-bottom: 15px;
         }
 
         #category-list a {
