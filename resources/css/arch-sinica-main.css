@@ -94,13 +94,29 @@ h4.slider, #content h1 {
 
 }
 
-.facet-grp h4, .facet-title {
+.facet-grp h4 /*, .facet-title*/ 
+{
   margin-top:1.5em;
   text-transform: uppercase;
   font-weight:500;
   color:#333333;
   border-bottom: solid #333 2px;
   display:block;
+}
+
+.facet-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #FFFFFF;
+  padding-bottom: 5px;
+  display: block;
+}
+.facet-list {
+  margin-top: 10px;
+  padding-left: 15px;
 }
 
 .facet-list a {
@@ -808,6 +824,56 @@ unpublished
 /* Facet styles */
 .label-facet {background-color:#eee; color:#666; font-weight:normal; margin:.25em; display:inline-block;}
 .facet-label {margin-left:.5em; display:block; text-align:left; white-space: normal;}
+
+.facet-label {
+  display: block;
+  color: #FFFFFF;
+  font-size: 14px;
+  margin: 5px 0;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 4px 0;
+  position: relative;
+}
+.facet-label .count {
+  color: #BBBBBB;
+  font-size: 12px;
+}
+
+/* Collapsible Groups */
+.facet-title.collapsible::after {
+  content: "▼"; /* Triangle indicator for collapsible */
+  font-size: 10px;
+  color: #FFFFFF;
+  float: right;
+  margin-right: 5px;
+}
+
+/* Nested Indentation for Hierarchy */
+.facet-label.nested {
+  padding-left: 20px;
+}
+
+/* View All Button Styling */
+.facet-list .btn-info {
+  background-color: #40E0D0;
+  color: black;
+  text-align: center;
+  width: 100%;
+  padding: 8px 0;
+  text-transform: uppercase;
+  border: none;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.facet-list .btn-default{
+  background-color: #8B0000;
+}
+.facet-list .btn-default.active{
+  background-color: white;
+}
+
 .facet .icon{margin-left:.25em;}
 
 /* Manuscripts */
@@ -1208,3 +1274,13 @@ img#arch-sinic-about {
     border:none;
     margin-left:1.5em;
     }
+
+
+.facet-display {
+      background-color: #8B0000; /* Dark red background */
+      color: white;
+      padding: 20px;
+      border-radius: 5px;
+      font-family: 'Source Sans Pro', Arial, sans-serif;
+}
+
