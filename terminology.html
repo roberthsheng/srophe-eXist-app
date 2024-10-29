@@ -1,61 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
-    <div class="padding-top">   
-        <div data-template="search:search-data" data-template-collection="keywords" data-template-sort-element="title">
-            <form method="get" action="terminology.html" class="center-block form-horizontal indent" role="form" style="margin:0; padding:2em 1em; background-color:#F7F7F9;">  
-            <h1 class="search-header indent">Thesaurus of Architectural Terminology 
-                 <small class="pull-right" style="margin-right:2em;">
-                    (<a class="togglelink text-info" data-toggle="collapse" data-target="#showSearch" href="#showSearch" data-text-swap="+ Show"> - Hide </a>)
-                </small>
-                </h1>
-            <div class="row collapse in" id="showSearch">
-                <div class="col-md-7 col-sm-offset-1">
-                    <!-- Keyword -->
+    <div class="padding-top" style="display: flex;">   
+        <!-- Left Column -->
+        <div class="col-md-3" style="background-color: #702020; min-height: 100vh; padding: 20px;">
+            <h1 style="color: white; font-size: 48px; margin-bottom: 40px;">Terminology</h1>
+            
+            <!-- Search Form -->
+            <div style="background-color: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin-bottom: 30px;">
+                <form method="get" action="terminology.html" role="form">
                     <div class="form-group">
-                        <label for="q" class="col-sm-2 col-md-3  control-label">Keywords: <span class="glyphicon glyphicon-question-sign text-info moreInfo" aria-hidden="true" data-toggle="tooltip" title="Search any text in a glossary record."/>
-                        </label>
-                        <div class="col-sm-10 col-md-9 ">    
-                            <input type="text" id="qs" name="q" class="form-control keyboard"/>
-                        </div>
+                        <label for="qs" style="color: white;">Keywords</label>
+                        <input type="text" id="qs" name="q" class="form-control keyboard"/>
                     </div>
-                    <!-- Place Name-->
                     <div class="form-group">
-                        <label for="term" class="col-sm-2 col-md-3  control-label">Architectural Feature: 
-                            <span class="glyphicon glyphicon-question-sign text-info moreInfo" aria-hidden="true" data-toggle="tooltip" title="Restrict search to architectural feature names, includes English, Pinyin and Chinese."/>
-                        </label>
-                        <div class="col-sm-10 col-md-9 ">   
-                            <input type="text" id="term" name="term" class="form-control keyboard"/>
+                        <label for="term" style="color: white;">Architectural Feature</label>
+                        <input type="text" id="term" name="term" class="form-control keyboard"/>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Search</button>
+                </form>
+            </div>
+
+            <!-- Categories -->
+            <div style="color: white">
+                <h4>Architectural Feature</h4>
+                <div style="padding-left: 15px">
+                    <div><a href="?facet-searchCategory=architectural+feature" style="color: white">▾ Building Frame</a></div>
+                    <div><a href="?facet-searchCategory=time+period" style="color: white">▾ Time Period</a></div>
+                    <div><a href="?facet-searchCategory=building+type" style="color: white">▾ Building Type</a></div>
+                    <div><a href="?facet-searchCategory=site+type" style="color: white">▾ Site Type</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-9" style="padding: 20px;">
+            <div data-template="search:search-data" data-template-collection="keywords" data-template-sort-element="title">
+                <div id="search-results-panel">
+                    <div data-template="app:pageination" data-template-search-string="yes" data-template-collection="keywords" data-template-sort-options="relevance,title"/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div data-template="search:show-hits" data-template-collection="keywords"/>
+                            <div class="page-bottom">
+                                <div data-template="app:pageination" data-template-collection="keywords"/>
+                            </div>
                         </div>
-                    </div>
-                    <i id="searchSpinner" class="fa fa-spinner fa-spin fa-lg"/>
-                    <div class="pull-right">
-                        <button type="submit" class="btn btn-success">Search</button> 
-                        <button type="reset" class="btn btn-info">Clear</button>
-                    </div>
-                </div>
-            </div>        
-        </form>
-            <br/>
-            <div id="search-results-panel">
-            <div data-template="app:pageination" data-template-search-string="yes" data-template-collection="keywords" data-template-sort-options="relevance,title"/>
-            <div class="row">
-                <div class="col-md-4">
-                    <!--
-                    <div class="slider-container">
-                        <div id="slider" data-template="app:display-slider"/>
-                    </div>
-                    -->
-                    <div data-template="app:display-facets" data-template-collection="keywords" data-template-facets="facet-def.xml"/>
-                </div>
-                <div class="col-md-8">
-                    <br/>
-                    <div data-template="search:show-hits" data-template-collection="keywords"/>
-                    <div class="page-bottom">
-                        <div data-template="app:pageination" data-template-collection="keywords"/>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </div>
+
+    <style>
+        .record {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .badge {
+            background-color: #888;
+            margin-right: 10px;
+        }
+        input.keyboard {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        .btn-success {
+            background-color: #4CAF50;
+            border: none;
+        }
+        .btn-success:hover {
+            background-color: #45a049;
+        }
+    </style>
 </div>
