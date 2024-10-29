@@ -2,18 +2,18 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude" data-template="templates:surround" data-template-with="templates/page.html" data-template-at="content">
     <div class="padding-top" style="display: flex;">   
         <!-- Left Column -->
-        <div class="col-md-3" style="background-color: #702020; min-height: 100vh; padding: 20px;">
-            <h1 style="color: white; font-size: 48px; margin-bottom: 40px;">Terminology</h1>
+        <div class="col-md-3 sidebar">
+            <h1 class="terminology-title">Terminology</h1>
             
             <!-- Search Form -->
-            <div style="background-color: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin-bottom: 30px;">
+            <div class="search-container">
                 <form method="get" action="terminology.html" role="form">
                     <div class="form-group">
-                        <label for="qs" style="color: white;">Keywords</label>
+                        <label for="qs">Keywords</label>
                         <input type="text" id="qs" name="q" class="form-control keyboard"/>
                     </div>
                     <div class="form-group">
-                        <label for="term" style="color: white;">Architectural Feature</label>
+                        <label for="term">Architectural Feature</label>
                         <input type="text" id="term" name="term" class="form-control keyboard"/>
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Search</button>
@@ -21,19 +21,41 @@
             </div>
 
             <!-- Categories -->
-            <div style="color: white">
+            <div class="categories">
                 <h4>Architectural Feature</h4>
-                <div style="padding-left: 15px">
-                    <div><a href="?facet-searchCategory=architectural+feature" style="color: white">▾ Building Frame</a></div>
-                    <div><a href="?facet-searchCategory=time+period" style="color: white">▾ Time Period</a></div>
-                    <div><a href="?facet-searchCategory=building+type" style="color: white">▾ Building Type</a></div>
-                    <div><a href="?facet-searchCategory=site+type" style="color: white">▾ Site Type</a></div>
+                <div class="category-list">
+                    <div class="category-item">
+                        <a href="#" class="category-header">▾ Building Frame</a>
+                        <div class="subcategory-list">
+                            <a href="?facet-searchCategory=architectural+feature&amp;facet-keywordCategory=building+frame">All Building Frame</a>
+                            <a href="?facet-searchCategory=architectural+feature&amp;facet-keywordCategory=bracketing">Bracketing</a>
+                            <a href="?facet-searchCategory=architectural+feature&amp;facet-keywordCategory=foundation">Foundation</a>
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <a href="#" class="category-header">▾ Time Period</a>
+                        <div class="subcategory-list">
+                            <a href="?facet-searchCategory=time+period">All Time Periods</a>
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <a href="#" class="category-header">▾ Building Type</a>
+                        <div class="subcategory-list">
+                            <a href="?facet-searchCategory=building+type">All Building Types</a>
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <a href="#" class="category-header">▾ Site Type</a>
+                        <div class="subcategory-list">
+                            <a href="?facet-searchCategory=site+type">All Site Types</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Right Column -->
-        <div class="col-md-9" style="padding: 20px;">
+        <div class="col-md-9 main-content">
             <div data-template="search:search-data" data-template-collection="keywords" data-template-sort-element="title">
                 <div id="search-results-panel">
                     <div data-template="app:pageination" data-template-search-string="yes" data-template-collection="keywords" data-template-sort-options="relevance,title"/>
@@ -51,24 +73,181 @@
     </div>
 
     <style>
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: #702020;
+            min-height: calc(100vh - 60px);
+            padding: 20px;
+            position: fixed;
+            width: 25%;
+            overflow-y: auto;
+            z-index: 1;
+        }
+
+        .terminology-title {
+            color: white;
+            font-size: min(48px, 4.5vw);
+            margin-bottom: 40px;
+            white-space: nowrap;
+            line-height: 1.2;
+        }
+
+        /* Search Form Styles */
+        .search-container {
+            background-color: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search-container label {
+            color: white;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .search-container input.keyboard {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+        }
+
+        /* Category Styles */
+        .categories {
+            color: white;
+        }
+
+        .categories h4 {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .category-list {
+            padding-left: 15px;
+        }
+
+        .category-item {
+            margin-bottom: 15px;
+        }
+
+        .category-header {
+            color: white;
+            display: block;
+            padding: 5px 0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .category-header:hover {
+            color: #ddd;
+            text-decoration: none;
+        }
+
+        .subcategory-list {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .subcategory-list a {
+            color: rgba(255,255,255,0.8);
+            display: block;
+            padding: 5px 0;
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+
+        .subcategory-list a:hover {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 25%;
+            padding: 20px 30px;
+            margin-top: 60px;
+        }
+
+        /* Results Styles */
         .record {
             border-bottom: 1px solid #eee;
-            padding: 10px 0;
+            padding: 15px 0;
         }
+
         .badge {
             background-color: #888;
             margin-right: 10px;
         }
-        input.keyboard {
-            padding: 8px;
-            margin-bottom: 10px;
-        }
+
         .btn-success {
             background-color: #4CAF50;
             border: none;
+            padding: 10px;
+            font-weight: 500;
         }
+
         .btn-success:hover {
             background-color: #45a049;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+                margin-top: 0;
+            }
+
+            .terminology-title {
+                font-size: 36px;
+            }
+        }
+
+        /* Pagination and Sort Controls */
+        .alpha-pages {
+            background: white;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .pagination {
+            margin: 0;
+        }
+
+        .dropdown-menu {
+            min-width: 100px;
+        }
     </style>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Toggle subcategories
+            $('.category-header').click(function(e) {
+                e.preventDefault();
+                $(this).siblings('.subcategory-list').slideToggle(200);
+                
+                // Toggle arrow
+                var text = $(this).text();
+                if(text.startsWith('▾')) {
+                    $(this).text(text.replace('▾', '▸'));
+                } else {
+                    $(this).text(text.replace('▸', '▾'));
+                }
+            });
+
+            // Show active category's subcategories
+            var urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.has('facet-searchCategory')) {
+                let category = urlParams.get('facet-searchCategory');
+                $(`a[href*="${category}"]`).closest('.category-item').find('.subcategory-list').show();
+            }
+        });
+    </script>
 </div>
