@@ -50,9 +50,13 @@
                 </div>
                 <!-- Displays Map -->
                 <div class="col-md-8">
+                    <!-- Map -->
                     <div data-template="app:display-map" data-template-collection="places"/>
                     <br/>
-                    <div data-template="search:show-hits" data-template-collection="places"/>
+                    <!-- Search Results -->
+                    <div style="height: 500px; overflow-y: scroll;">
+                        <div data-template="search:show-hits" data-template-collection="places"/>
+                    </div>
                     <div class="page-bottom">
                         <div data-template="app:pageination" data-template-collection="places"/>
                     </div>
