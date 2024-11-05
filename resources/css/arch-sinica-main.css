@@ -3,7 +3,10 @@
  * Deep Red for nav border: 771210
  * Darker red for text: 501A1A 
  */
-   
+
+ 
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;600&display=swap');
+
 /* Main content blocks */
 body {font-family: arial, sans-serif; background-color:#fff; }
 #main { padding: 0; background-color:#FFFFF; }
@@ -90,7 +93,7 @@ body {font-family: arial, sans-serif; background-color:#fff; }
 
 h4.slider, #content h1 {
  text-transform: uppercase;
-  color:#333;
+  color:white;
 
 }
 
@@ -105,11 +108,12 @@ h4.slider, #content h1 {
 }
 
 .facet-title {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 20px;/*16px;*/
+  /*font-weight: bold;*/
   color: #FFFFFF;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+  /*text-transform: uppercase;*/
+  /*margin-bottom: 10px;*/
+  margin-top:20px;
   border-bottom: 1px solid #FFFFFF;
   padding-bottom: 5px;
   display: block;
@@ -120,7 +124,8 @@ h4.slider, #content h1 {
 }
 
 .facet-list a {
-  border-color:white !important;
+  /*border-color:white !important;*/
+  border:none;
   padding:.35em;
   /*color:#4d7775;*/
 }
@@ -856,15 +861,16 @@ unpublished
 
 /* View All Button Styling */
 .facet-list .btn-info {
-  background-color: #40E0D0;
-  color: black;
+  background-color: #8B0000;
   text-align: center;
   width: 100%;
   padding: 8px 0;
   text-transform: uppercase;
-  border: none;
+  border: 1px solid white;
+  border-radius: 5px;
   font-weight: bold;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .facet-list .btn-default{
@@ -873,7 +879,9 @@ unpublished
 .facet-list .btn-default.active{
   background-color: white;
 }
-
+.facet-list .btn-default:hover{
+  color:#CCCCCC;
+}
 .facet .icon{margin-left:.25em;}
 
 /* Manuscripts */
@@ -1281,6 +1289,6 @@ img#arch-sinic-about {
       color: white;
       padding: 20px;
       border-radius: 5px;
-      font-family: 'Source Sans Pro', Arial, sans-serif;
+      font-family: 'Jost', Arial, sans-serif;
 }
 
