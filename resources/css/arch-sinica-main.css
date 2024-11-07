@@ -3,7 +3,10 @@
  * Deep Red for nav border: 771210
  * Darker red for text: 501A1A 
  */
-   
+
+ 
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;600&display=swap');
+
 /* Main content blocks */
 body {font-family: arial, sans-serif; background-color:#fff; }
 #main { padding: 0; background-color:#FFFFF; }
@@ -90,11 +93,12 @@ body {font-family: arial, sans-serif; background-color:#fff; }
 
 h4.slider, #content h1 {
  text-transform: uppercase;
-  color:#333;
+  color:white;
 
 }
 
-.facet-grp h4, .facet-title {
+.facet-grp h4 /*, .facet-title*/ 
+{
   margin-top:1.5em;
   text-transform: uppercase;
   font-weight:500;
@@ -103,8 +107,25 @@ h4.slider, #content h1 {
   display:block;
 }
 
+.facet-title {
+  font-size: 20px;/*16px;*/
+  /*font-weight: bold;*/
+  color: #FFFFFF;
+  /*text-transform: uppercase;*/
+  /*margin-bottom: 10px;*/
+  margin-top:20px;
+  border-bottom: 1px solid #FFFFFF;
+  padding-bottom: 5px;
+  display: block;
+}
+.facet-list {
+  margin-top: 10px;
+  padding-left: 15px;
+}
+
 .facet-list a {
-  border-color:white !important;
+  /*border-color:white !important;*/
+  border:none;
   padding:.35em;
   /*color:#4d7775;*/
 }
@@ -808,6 +829,59 @@ unpublished
 /* Facet styles */
 .label-facet {background-color:#eee; color:#666; font-weight:normal; margin:.25em; display:inline-block;}
 .facet-label {margin-left:.5em; display:block; text-align:left; white-space: normal;}
+
+.facet-label {
+  display: block;
+  color: #FFFFFF;
+  font-size: 14px;
+  margin: 5px 0;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 4px 0;
+  position: relative;
+}
+.facet-label .count {
+  color: #BBBBBB;
+  font-size: 12px;
+}
+
+/* Collapsible Groups */
+.facet-title.collapsible::after {
+  content: "▼"; /* Triangle indicator for collapsible */
+  font-size: 10px;
+  color: #FFFFFF;
+  float: right;
+  margin-right: 5px;
+}
+
+/* Nested Indentation for Hierarchy */
+.facet-label.nested {
+  padding-left: 20px;
+}
+
+/* View All Button Styling */
+.facet-list .btn-info {
+  background-color: #8B0000;
+  text-align: center;
+  width: 100%;
+  padding: 8px 0;
+  text-transform: uppercase;
+  border: 1px solid white;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.facet-list .btn-default{
+  background-color: #8B0000;
+}
+.facet-list .btn-default.active{
+  background-color: white;
+}
+.facet-list .btn-default:hover{
+  color:#CCCCCC;
+}
 .facet .icon{margin-left:.25em;}
 
 /* Manuscripts */
@@ -1208,3 +1282,13 @@ img#arch-sinic-about {
     border:none;
     margin-left:1.5em;
     }
+
+
+.facet-display {
+      background-color: #8B0000; /* Dark red background */
+      color: white;
+      padding: 20px;
+      border-radius: 5px;
+      font-family: 'Jost', Arial, sans-serif;
+}
+
