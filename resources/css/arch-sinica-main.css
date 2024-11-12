@@ -108,7 +108,7 @@ h4.slider, #content h1 {
 }
 
 .facet-title {
-  font-size: 20px;/*16px;*/
+  font-size: 30px;/*16px;*/
   /*font-weight: bold;*/
   color: #FFFFFF;
   /*text-transform: uppercase;*/
@@ -833,7 +833,7 @@ unpublished
 .facet-label {
   display: block;
   color: #FFFFFF;
-  font-size: 14px;
+  font-size: 20px;
   margin: 5px 0;
   text-decoration: none;
   cursor: pointer;
@@ -861,7 +861,7 @@ unpublished
 
 /* View All Button Styling */
 .facet-list .btn-info {
-  background-color: #8B0000;
+  background-color: #771311;
   text-align: center;
   width: 100%;
   padding: 8px 0;
@@ -874,7 +874,7 @@ unpublished
 }
 
 .facet-list .btn-default{
-  background-color: #8B0000;
+  background-color: #771311;
 }
 .facet-list .btn-default.active{
   background-color: white;
@@ -1285,7 +1285,7 @@ img#arch-sinic-about {
 
 
 .facet-display {
-      background-color: #8B0000; /* Dark red background */
+      background-color: #771311; /* Dark red background */
       color: white;
       padding: 20px;
       border-radius: 5px;
