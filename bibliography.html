@@ -3,7 +3,6 @@
     data-template-with="templates/page.html" data-template-at="content">
     <div class="padding-top" style="display: flex; margin-top: 0;">
         <div data-template="search:search-data" data-template-collection="bibl" data-template-sort-element="author">
-            <!-- Sidebar with red background -->
             <div class="col-md-3 sidebar"
                 style="background-color: #702020; padding: 20px; height: 100vh; position: fixed; color: white;">
                 <h1 class="bibliography-title"
@@ -57,7 +56,6 @@
                     </form>
                 </div>
 
-                <!-- Dynamic Categories with Improved Style -->
                 <div id="category-list" style="color: white; margin-top: 5px;">
                     <div data-template="app:display-facets" data-template-collection="bibl"
                         data-template-facets="facet-def.xml" style="margin-top: 10px;">
@@ -95,20 +93,19 @@
                 </div>
             </div>
 
-            <!-- Main content area for results with padding and width adjustments -->
+            <!-- Main content area for results -->
             <div class="col-md-9 main-content" style="margin-left: 25%; padding: 40px 20px;">
                 <div id="search-results-panel" style="width: 100%;"> <!-- Extend results to full width -->
                     
-                    <!-- Pagination Controls at the Top -->
                     <div data-template="app:pageination" data-template-search-string="yes"
-                         data-template-collection="bibl" data-template-sort-options="relevance,title,author,pubPlace,pubDate">
+                         data-template-collection="keywords" data-template-sort-options="relevance,title,author,pubPlace,pubDate">
                     </div>
 
                     <!-- Row for Search Results -->
                     <div class="row">
                         <div class="col-md-12">
                             <!-- Display Search Hits -->
-                            <div data-template="search:show-hits" data-template-collection="bibl"
+                            <div data-template="search:show-hits" data-template-collection="keywords"
                                  style="width: 100%; padding-left: 10px; padding-right: 10px; line-height: 1.5em;">
                                 <!-- Search results will be rendered here by the 'search:show-hits' template -->
                             </div>
