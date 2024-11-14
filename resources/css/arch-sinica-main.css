@@ -875,9 +875,11 @@ unpublished
 
 .facet-list .btn-default{
   background-color: #771311;
+  text-indent: 25px;
 }
 .facet-list .btn-default.active{
   background-color: white;
+  text-indent: 0px;
 }
 .facet-list .btn-default:hover{
   color:#CCCCCC;
@@ -1000,8 +1002,8 @@ h4.slider {
 }
 .slider-container {
   display: block;
-  min-height: 20px;
-  padding: 1em 0;
+  /*min-height: 20px;*/
+  padding-top: 0.5em;
 }
 
 /* Breakpoint for Medium Viewport: Nav; */
@@ -1292,3 +1294,8 @@ img#arch-sinic-about {
       font-family: 'Jost', Arial, sans-serif;
 }
 
+.facet-sidebar-title{
+  font-size: 30px;
+  font-weight: bold;
+  padding-top: 20px;
+}
