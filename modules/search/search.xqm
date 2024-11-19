@@ -158,7 +158,7 @@ function search:dsa-show-hits($node as node()*, $model as map(*), $collection as
                             for $p in $hit
                             let $id := replace($p/descendant::tei:idno[1],'/tei','')
                             return 
-                                <div class="indent" style="border-bottom:1px dotted #eee; padding:1em; color: #000000">{tei2html:dsa-summary-view(root($p), '', $id)}</div>
+                                <div class="indent" style="border-bottom:1px dotted #eee; padding:0.3em; color: #000000">{tei2html:dsa-summary-view(root($p), '', $id)}</div>
                         }</div>
                     </div>   
                 else 
@@ -180,7 +180,7 @@ function search:dsa-show-hits($node as node()*, $model as map(*), $collection as
                             for $p in $children
                             let $id := replace($p/descendant::tei:idno[1],'/tei','')
                             return 
-                                <div class="indent" style="border-bottom:1px dotted #eee; padding:1em; color: #000000">{tei2html:dsa-summary-view($p, '', $id)}</div>
+                                <div class="indent" style="border-bottom:1px dotted #eee; padding:0.3em; color: #000000">{tei2html:dsa-summary-view($p, '', $id)}</div>
                         }</div>
                     </div>                       
             else 
