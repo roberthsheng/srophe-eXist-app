@@ -213,7 +213,7 @@ declare function tei2html:dsa-summary-view($nodes as node()*, $lang as xs:string
             {if(contains($id,'/image/')) then
                 <img src="{$nodes//tei:idno[@type='thumbnail']}"/>
             else ()}
-            <a href="{replace($id,$config:base-uri,$config:nav-base)}" dir="ltr" style="color: black; text-decoration: underline;">{$title}</a>
+            <a href="{replace($id,$config:base-uri,$config:nav-base)}" dir="ltr" style="color: black; text-decoration: underline; font-family: 'Jost', sans-serif">{$title}</a>
             {if($nodes/descendant::tei:entryFree) then 
                 concat(' (',replace(string($nodes/descendant::tei:entryFree/@type),'-',' '),')')
              else if(contains($id,'/bibl/')) then 
