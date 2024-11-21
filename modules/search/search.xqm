@@ -149,40 +149,41 @@ function search:dsa-show-hits($node as node()*, $model as map(*), $collection as
                     order by $siteTitle[1]
 
                     return 
-                    <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em; padding: 10px; border: 1px solid #ccc; background-color: #ffffff;">
+                    <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em; padding: 10px; border: 0px solid #ccc; background-color: #ffffff;">
                         <a href="{replace($idno[1], $config:base-uri, $config:nav-base)}" 
-                           style="font-family: Arial, sans-serif; color: #000000; font-size: 18px;">
+                           style="font-family: 'Jost', sans-serif; color: #000000; font-size: 18px;">
                           {tei2html:tei2html($siteTitle[1])}
                         </a> (contains {count($hit)} artifact(s))
                         <div class="indent collapse in" style="background-color:#FFFFFF;" id="show{$facet-grp-p}">{
                             for $p in $hit
-                            let $id := replace($p/descendant::tei:idno[1],'/tei','')
+                            let $id := replace($p/descendant::tei:idno[1], '/tei', '')
                             return 
                                 <div class="indent" style="border-bottom:1px dotted #eee; padding:0.3em; color: #000000">{tei2html:dsa-summary-view(root($p), '', $id)}</div>
-                        }</div>
-                    </div>   
-                else 
-                    let $hits := $model("sites") 
-                    for $hit at $p in subsequence($hits, $search:start, $search:perpage)
-                    let $title := $hit/descendant::tei:title[1]
-                    let $idno := replace($hit/descendant::tei:idno[1],'/tei','') 
-                    let $children := 
-                       (:$model("hits")//tei:TEI[.//tei:relation[@passive = $idno][@ref="schema:containedInPlace"]]:)
-                       collection($config:data-root)//tei:TEI[.//tei:relation[@ref="schema:containedInPlace"][@passive = $idno]]
-            
-                    return 
-                    <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em; padding: 10px; border: 1px solid #ccc; background-color: #ffffff;">           
-                        <a href="{replace($idno, $config:base-uri, $config:nav-base)}" 
-                           style="font-family: Arial, sans-serif; color: #000000; font-size: 18px;">
-                          {tei2html:tei2html($title)}
-                        </a> (contains {count($children)} artifact(s))
-                        <div class="indent collapse in" style="background-color:#FFFFFF;" id="show{$idno}">{
-                            for $p in $children
-                            let $id := replace($p/descendant::tei:idno[1],'/tei','')
-                            return 
-                                <div class="indent" style="border-bottom:1px dotted #eee; padding:0.3em; color: #000000">{tei2html:dsa-summary-view($p, '', $id)}</div>
-                        }</div>
-                    </div>                       
+                            }</div>
+                            </div>   
+                            else 
+                                let $hits := $model("sites") 
+                                for $hit at $p in subsequence($hits, $search:start, $search:perpage)
+                                let $title := $hit/descendant::tei:title[1]
+                                let $idno := replace($hit/descendant::tei:idno[1], '/tei', '') 
+                                let $children := 
+                                   (:$model("hits")//tei:TEI[.//tei:relation[@passive = $idno][@ref="schema:containedInPlace"]]:)
+                                   collection($config:data-root)//tei:TEI[.//tei:relation[@ref="schema:containedInPlace"][@passive = $idno]]
+
+                                return 
+                                <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em; padding:10px; border:0px solid #ccc; background-color:#ffffff; font-family:'Jost', sans-serif">           
+                                    <a href="{replace($idno, $config:base-uri, $config:nav-base)}" 
+                                       style="font-family: Arial, sans-serif; color:#000000; font-size:18px; font-family:'Jost', sans-serif">
+                                      {tei2html:tei2html($title)}
+                                    </a> (contains {count($children)} artifact(s))
+                                    <div class="indent collapse in" style="background-color:#FFFFFF;" id="show{$idno}">{
+                                        for $p in $children
+                                        let $id := replace($p/descendant::tei:idno[1], '/tei', '')
+                                        return 
+                                            <div class="indent" style="border-bottom:1px dotted #eee; padding:0.3em; color:#000000">{tei2html:dsa-summary-view($p, '', $id)}</div>
+                                    }</div>
+                                </div>
+
             else 
                 let $hits := $model("hits")
                 for $hit at $p in subsequence($hits, $search:start, $search:perpage)

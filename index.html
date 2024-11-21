@@ -6,15 +6,14 @@
             <div class="col-md-8 main-content">
                 <h1 class="site-title">Architectura Sinica</h1>
                 <p class="site-subtitle">An Interactive Resource for the Study of China's Traditional Architecture</p>
-
-                <!-- Search Bar -->
-                <div class="search-container">
-                    <div class="input-group">
-                        <input type="text" class="form-control search-input" placeholder="Search..." name="q" />
-                        <button type="submit" class="search-button">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </div>
+                
+                <!-- Navigation Links -->
+                <div class="nav-links">
+                    <ul>
+                        <li><a href="research-tool.html">甲 Dynamic Site Archive</a></li>
+                        <li><a href="terminology.html">乙 Thesaurus of Architectural Terminology</a></li>
+                        <li><a href="bibliography.html">丙 Bibliography</a></li>
+                    </ul>
                 </div>
             </div>
 
@@ -29,15 +28,7 @@
                         </div>
                     </div>
 
-                    <!-- Navigation Links -->
-                    <div class="nav-links">
-                        <ul>
-                            <li><a href="research-tool.html">甲 Dynamic Site Archive</a></li>
-                            <li><a href="terminology.html">乙 Thesaurus of Architectural Terminology</a></li>
-                            <li><a href="bibliography.html">丙 Bibliography</a></li>
-                            <li class="greyed-out">丁 Epigraphy</li>
-                        </ul>
-                    </div>
+                
                 </div>
             </div>
         </div>
@@ -108,6 +99,56 @@
     </div>
 
     <style>
+        /* Styling for the nav-links under the main title */
+        .nav-links {
+            text-align: center;
+            margin-top: 20px; /* Add spacing from the subtitle */
+        }
+
+        .nav-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto; /* Center the list */
+            display: inline-block; /* Ensure it stays centered */
+            background: rgba(0, 0, 0, 0.5); /* Add a semi-transparent background for visibility */
+            border-radius: 8px; /* Round the corners */
+            padding: 15px 20px; /* Add padding for better spacing */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+        }
+
+        .nav-links li {
+            margin: 10px 0; /* Add spacing between links */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff; /* White text for high contrast */
+            font-family: 'Jost', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px; /* Add padding for a button-like appearance */
+            transition: all 0.3s ease; /* Smooth transition for hover effects */
+            border-radius: 5px; /* Slight rounding for the text links */
+            display: block; /* Make each link take up the full width */
+            text-align: center; /* Center the text */
+            background: transparent; /* Transparent by default */
+            border: 2px solid transparent; /* No border by default */
+        }
+
+        .nav-links a:hover {
+            background: #702020; /* Maroon/red background on hover */
+            color: #fff; /* White text on hover */
+            border: 2px solid #702020; /* Add a maroon/red border */
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+
+        .nav-links .greyed-out {
+            color: gray;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+
         /* Update the home-page background styling */
         .home-page {
             display: flex;
@@ -115,7 +156,7 @@
             justify-content: center;
             min-height: 100vh;
             padding: 0;
-            background-image: url('$nav-base/resources/images/home-page.png');
+            background-image: url('resources/images/Untitled Project.jpg');
             background-position: center 50%;
             background-size: cover;
             background-repeat: no-repeat;
@@ -151,38 +192,12 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        /* Centering the search container and adjusting vertical alignment */
-        .search-container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
         .input-group {
             display: flex;
             background: white;
             border-radius: 30px;
             overflow: hidden;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-input {
-            flex-grow: 1;
-            border: none;
-            padding: 12px 20px;
-            font-size: 18px;
-            border-radius: 30px 0 0 30px;
-        }
-
-        .search-button {
-            background: #000;
-            border: none;
-            padding: 12px 25px;
-            color: white;
-            border-radius: 0 30px 30px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* Add these styles to your existing CSS */
@@ -192,31 +207,24 @@
             width: 100%;
         }
 
-        /* Update the announcements panel styles */
+        /* Adjust the width of the announcement panel */
         .col-md-4 {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 300px;
-            margin-right: 20px;
-            height: 80vh;
-            display: flex;
-            align-items: stretch;
+            width: 400px; /* Increase the width as needed */
+            margin-right: 20px; /* Optional: Keep a consistent margin from the edge of the page */
+            position: relative;
         }
 
         .announcements-panel {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.9); /* Keep the same background */
             border-radius: 8px;
             padding: 20px;
-            margin: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 3;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+            width: 100%; /* Make the panel take the full width of its container */
+            height: 500px; /* Ensure the height adjusts dynamically to the content */
         }
+
 
         /* Center the main content between left edge and announcements */
         .col-md-8 {
@@ -313,5 +321,6 @@
                 margin: 10px 5px;
                 height: auto;
             }
+        }
     </style>
 </div>
