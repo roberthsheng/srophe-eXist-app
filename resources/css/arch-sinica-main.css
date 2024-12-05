@@ -1300,3 +1300,10 @@ img#arch-sinic-about {
   font-weight: bold;
   padding-top: 20px;
 }
+
+#research-tool{
+  background-color: rgba(255,255,255,0.2);
+  padding: 15px;
+  border-radius: 10px;
+}
+
